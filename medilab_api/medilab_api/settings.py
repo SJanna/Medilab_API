@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     #Mis apps
     'authentication',
+    'appointment',
 
     'django.contrib.admin',
     'django.contrib.auth',
