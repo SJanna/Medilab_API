@@ -16,7 +16,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(username, password, **extra_fields)
-    
+
 
 class UserBase(AbstractBaseUser):
     last_login = None
@@ -40,7 +40,7 @@ class Gender(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    
+
 
 class IdentificationType(models.Model):
     name = models.CharField(max_length=255)
@@ -73,19 +73,24 @@ class Profile(models.Model):
 
     class Meta:
         abstract = True
-        
+
 # This are the different types of users that the system will have.
 # --------------------------------------------------------------------------------
+
+
 class DoctorUser(UserBase, Profile):
     pass        # It could have some basic information about the doctor
+
 
 class PatientUser(UserBase, Profile):
     pass        # It could have some basic information about the patient
 
+
 class CompanyUser(UserBase, Profile):
     first_name, last_name, identification_number, identification_type, gender = None, None, None, None, None
-            # It could have some basic information about the company
+    # It could have some basic information about the company
     pass
+
 
 class BacteriologistUser(UserBase, Profile):
     pass        # It could have some basic information about the bacteriologist
@@ -98,25 +103,3 @@ class ReceptionistUser(UserBase, Profile):
 class otherUser(UserBase, Profile):
     pass        # It could have some basic information about the other user...
 # --------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .permissions import IsReceptionistUser, IsDoctorUser, IsBacteriologistUser, IsCompanyUser
 from .models import UserBase, Group, DoctorUser, CompanyUser, IdentificationType
-from .serializers import CompanySerializer, DoctorSerializer, GruopSerializer, IdentificationTypeSerializer, UserSerializer
+from .serializers import CompanySerializer, DoctorSerializer, GroupSerializer, IdentificationTypeSerializer, UserSerializer
 from rest_framework.response import Response
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -13,7 +13,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = []
-    serializer_class = GruopSerializer
+    serializer_class = GroupSerializer
     queryset = Group.objects.all()
 
 

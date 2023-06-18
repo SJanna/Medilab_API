@@ -12,9 +12,12 @@ class EconomyActivity(models.Model):
 class Tariff(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     active = models.BooleanField(blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     # One tariff has many exams.
+
+    def __str__(self):
+        return self.name
 
 
 class Schooling(models.Model):
@@ -60,27 +63,27 @@ class MedicalInsurance(models.Model):
     updated_at = models.DateTimeField()
 
 
-class Exams(models.Model):
+class Exam(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
     # One exam belongs to one tariff, related_name allows to access the exams of a tariff.
     tariff = models.ForeignKey(
-        Tariff, on_delete=models.CASCADE, related_name='exams')
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+        Tariff, on_delete=models.CASCADE, related_name='exam')
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
 
 # This are the information of the user that is logged in.
 # ------------------------------------------------------------------------------
 class DoctorInfo(models.Model):
-    # user = models.OneToOneField(DoctorUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(DoctorUser, on_delete=models.CASCADE)
     professional_code = models.CharField(max_length=255, blank=True, null=True)
     resolution_number = models.CharField(max_length=255, blank=True, null=True)
     signature = models.BinaryField(blank=True, null=True)
 
 
 class CompanyInfo(models.Model):
-    # user = models.OneToOneField(CompanyUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CompanyUser, on_delete=models.CASCADE)
     nit = models.CharField(max_length=255, unique=True, primary_key=True)
     name = models.CharField(max_length=255, blank=True, null=True)
     nickname = models.CharField(max_length=255, blank=True, null=True)
@@ -88,10 +91,12 @@ class CompanyInfo(models.Model):
         EconomyActivity, models.DO_NOTHING, blank=True, null=True)
     observations = models.TextField(blank=True, null=True)
     has_limit = models.BooleanField(blank=True, null=True)
-    limit_amount = models.FloatField(blank=True, null=True)
+    balance = models.FloatField(blank=True, null=True)
     # List of companies that the company has a contract with.
-    tariff = models.ForeignKey(
-        Tariff, models.DO_NOTHING, blank=True, null=True)
+    tariff = models.ManyToManyField(Tariff, blank=True)
+
+    def __str__(self):
+        return self.nickname + "-" + self.name
 
 
 class PatientInfo(models.Model):
@@ -152,8 +157,20 @@ class PaymentType(models.Model):
 class Package(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+    
+
+class CompanySection(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.name
 
 
 class Appointment(models.Model):
@@ -161,11 +178,11 @@ class Appointment(models.Model):
     patient = models.ForeignKey(
         PatientInfo, models.DO_NOTHING, blank=True, null=True)
     # ------------------------------------------------------------------
-    
-    # Empresa: (mission company)* 
+
+    # Empresa: (mission company)*
     company = models.ForeignKey(
         CompanyInfo, models.DO_NOTHING, blank=True, null=True)
-    
+
     # Datos de la recepción --------------------------------------------
     city = models.ForeignKey(
         City, models.DO_NOTHING, blank=True, null=True)
@@ -181,8 +198,8 @@ class Appointment(models.Model):
     turn = models.IntegerField(blank=True, null=True)
     total_amount = models.FloatField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)  # Observations
-    company_section = models.CharField(max_length=255, blank=True, null=True)
-    exams = models.ForeignKey(Exams, models.DO_NOTHING, blank=True, null=True)
+    company_section = models.ForeignKey(
+        CompanySection, models.DO_NOTHING, blank=True, null=True)
     package = models.ForeignKey(
         Package, models.DO_NOTHING, blank=True, null=True)
     # ------------------------------------------------------------------
@@ -191,19 +208,19 @@ class Appointment(models.Model):
     # 0: Pendiente, 1: En proceso, 2: Finalizado, 3: Cancelado
     status = models.IntegerField(blank=True, null=True)
     # ------------------------------------------------------------------
-    
+
     # Previsualización de resultados -----------------------------------
     status_exam = models.IntegerField(blank=True, null=True)
     # ------------------------------------------------------------------
 
+    # Factura ----------------------------------------------------------
+
+    # ------------------------------------------------------------------
+    exams = models.ForeignKey(Exam, models.DO_NOTHING, blank=True, null=True)
     registered_by = models.ForeignKey(
         ReceptionistInfo, models.DO_NOTHING, blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-    
-    # Factura ----------------------------------------------------------
-    
-    # ------------------------------------------------------------------
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
 
 class MedicalRecord(models.Model):
@@ -226,13 +243,13 @@ class EmailDomainType(models.Model):
         db_table = 'email_domain_types'
 
 
-class ExamsPackage(models.Model):
+class ExamPackage(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
     package = models.ForeignKey(
         Package, models.DO_NOTHING, related_name='package', blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
 
 class MissionCompany(models.Model):
@@ -240,10 +257,8 @@ class MissionCompany(models.Model):
     company = models.ForeignKey(
         CompanyInfo, models.DO_NOTHING, related_name='company', blank=True, null=True)
     active = models.BooleanField(blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
 
 # This will be a default Exam table that allow the Exams table to consult the price of the default exam
