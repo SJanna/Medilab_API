@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .permissions import IsReceptionistUser, IsDoctorUser, IsBacteriologistUser, IsCompanyUser
-from .models import UserBase, Group, Doctor, Company, IdentificationType
-from .serializers import CompanySerializer, DoctorSerializer, GruopSerializer, IdentificationTypeSerializer, UserSerializer
+from .models import UserBase, Group, DoctorUser, CompanyUser, IdentificationType
+from .serializers import CompanySerializer, DoctorSerializer, GroupSerializer, IdentificationTypeSerializer, UserSerializer
 from rest_framework.response import Response
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -13,19 +13,19 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = []
-    serializer_class = GruopSerializer
+    serializer_class = GroupSerializer
     queryset = Group.objects.all()
 
 
 class DoctorViewSet(viewsets.ModelViewSet):
     permission_classes = []
     serializer_class = DoctorSerializer
-    queryset = Doctor.objects.all()
+    queryset = DoctorUser.objects.all()
 
 class CompanyViewSet(viewsets.ModelViewSet):
     permission_classes = []
     serializer_class = CompanySerializer
-    queryset = Company.objects.all()
+    queryset = CompanyUser.objects.all()
 
 class IdentificationTypeViewSet(viewsets.ModelViewSet):
     permission_classes = []

@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, Group, BaseUserManager
 from django.db import models
-# 'Doctores', 'Empresas', 'Pacientes', 'Recepcionista', 'Bacteriologo'
 
 
 class UserManager(BaseUserManager):
@@ -43,13 +42,6 @@ class Gender(models.Model):
     updated_at = models.DateTimeField()
 
 
-class EconomyActivity(models.Model):
-    name = models.CharField(max_length=255)
-    code = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
 class IdentificationType(models.Model):
     name = models.CharField(max_length=255)
     prefix = models.CharField(max_length=10)
@@ -61,10 +53,10 @@ class IdentificationType(models.Model):
 
 
 class Profile(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255, blank=True, null=True)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
     identification_type = models.ForeignKey(
-        IdentificationType, on_delete=models.CASCADE)
+        IdentificationType, on_delete=models.CASCADE, null=True)
     identification_number = models.CharField(
         max_length=255, unique=True, primary_key=True)
     email = models.CharField(max_length=255, blank=True, null=True)
@@ -82,124 +74,32 @@ class Profile(models.Model):
     class Meta:
         abstract = True
 
-
-class Doctor(UserBase, Profile):
-    professional_code = models.CharField(max_length=255, blank=True, null=True)
-    resolution_number = models.CharField(max_length=255, blank=True, null=True)
-    signature = models.BinaryField(blank=True, null=True)
+# This are the different types of users that the system will have.
+# --------------------------------------------------------------------------------
 
 
-class Company(UserBase, Profile):
+class DoctorUser(UserBase, Profile):
+    pass        # It could have some basic information about the doctor
+
+
+class PatientUser(UserBase, Profile):
+    pass        # It could have some basic information about the patient
+
+
+class CompanyUser(UserBase, Profile):
     first_name, last_name, identification_number, identification_type, gender = None, None, None, None, None
-    nit = models.CharField(max_length=255, unique=True, primary_key=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
-    nickname = models.CharField(max_length=255, blank=True, null=True)
-    economy_activity = models.ForeignKey(
-        EconomyActivity, models.DO_NOTHING, blank=True, null=True)
-    observations = models.TextField(blank=True, null=True)
-    has_limit = models.BooleanField(blank=True, null=True)
-    limit_amount = models.FloatField(blank=True, null=True)
-    # List of companies that the company has a contract with.
-    mission_companies = models.ForeignKey(
-        'MissionCompanies', models.DO_NOTHING, blank=True, null=True)
-    tariff = models.ForeignKey(
-        'Tariff', models.DO_NOTHING, blank=True, null=True)
-
-
-class MissionCompanies(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    company = models.ForeignKey(
-        'Company', models.DO_NOTHING, blank=True, null=True)
-    active = models.BooleanField(blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-
-class Tarrif(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    active = models.BooleanField(blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-    # One tariff has many exams. 
-
-
-class Exams(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    price = models.FloatField(blank=True, null=True)
-    # One exam belongs to one tariff, related_name allows to access the exams of a tariff.
-    tariff = models.ForeignKey(
-        'Tariff', on_delete=models.CASCADE, related_name='exams')
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-
-# This will be a default Exam table that allow the Exams table to consult the price of the default exam
-class DefaultExams(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    price = models.FloatField(blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-
-class Bacteriologist(UserBase, Profile):
-    signature = models.BinaryField(blank=True, null=True)
-
-
-class Receptionist(UserBase, Profile):
+    # It could have some basic information about the company
     pass
+
+
+class BacteriologistUser(UserBase, Profile):
+    pass        # It could have some basic information about the bacteriologist
+
+
+class ReceptionistUser(UserBase, Profile):
+    pass        # It could have some basic information about the receptionist
 
 
 class otherUser(UserBase, Profile):
-    pass
-
-
-class Schooling(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-
-class Zone(models.Model):
-    prefix = models.CharField(max_length=255, blank=True, null=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-
-class Strata(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-
-class MaritalStatus(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-
-class Eps(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-
-class Patient(UserBase, Profile):
-    profile_picture = models.TextField(blank=True, null=True)
-    fingerprint = models.CharField(max_length=255, blank=True, null=True)
-    signature = models.CharField(max_length=255, blank=True, null=True)
-    date_of_birth = models.CharField(max_length=255, blank=True, null=True)
-    place_of_birth = models.CharField(max_length=255, blank=True, null=True)
-    dependant = models.CharField(max_length=255, blank=True, null=True)
-    schooling = models.ForeignKey(
-        Schooling, models.DO_NOTHING, blank=True, null=True)
-    zone = models.ForeignKey(Zone, models.DO_NOTHING, blank=True, null=True)
-    stratum = models.ForeignKey(
-        Strata, models.DO_NOTHING, blank=True, null=True)
-    marital_status = models.ForeignKey(
-        MaritalStatus, models.DO_NOTHING, blank=True, null=True)
-    blood_type = models.CharField(max_length=255, blank=True, null=True)
-    photo = models.CharField(max_length=255, blank=True, null=True)
-    eps = models.ForeignKey('Eps', models.DO_NOTHING, blank=True, null=True)
-
-# Posible modelo para crear pacientes con usuario
+    pass        # It could have some basic information about the other user...
+# --------------------------------------------------------------------------------
