@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Company, Doctor, IdentificationType, UserBase, Group
+from .models import CompanyUser, DoctorUser, IdentificationType, UserBase, Group
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,24 +29,24 @@ class GruopSerializer(serializers.ModelSerializer):
 
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Doctor
+        model = DoctorUser
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}, 'userbase_ptr': {'read_only': True}}
         # read_only_fields = ('sign_in_count', 'last_login', 'last_sign_in_ip')
 
     def create(self, validated_data):
-        user = Doctor.objects.create_user(**validated_data)
+        user = DoctorUser.objects.create_user(**validated_data)
         return user
     
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Company
+        model = CompanyUser
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
         # read_only_fields = ('sign_in_count', 'last_login', 'last_sign_in_ip')
 
     def create(self, validated_data):
-        user = Company.objects.create_user(**validated_data)
+        user = CompanyUser.objects.create_user(**validated_data)
         return user
     
 class IdentificationTypeSerializer(serializers.ModelSerializer):
