@@ -23,6 +23,12 @@
 
 * Ciudad en appointments (Datos de la recepción) es la ciudad donde se atiende el paciente, en ese caso se escoge el tarifario específico de dicha ciudad, además el doctor se pone como "NO APLICA".
 
-* Encuesta de satisfación y anuncio al ingreso
+* Encuesta de satisfación y anuncio al ingreso.
 
-* Una empresa en misión son sub-empresas
+* Una empresa en misión son sub-empresas.
+
+* Trabajo offline que se sincroniza con el sistema cuando se tenga internet.
+
+* (Quién firma) es el doctor que atendió al paciente, no el que se asigna en recpción. Se verificia según el usuario.
+
+* Se debe tener un filtro para que el doctor pueda ver solo sus pacientes. (Al menos en el caso de brigadas) - Se puede hacer creando un usuario DOctor-Brigada y asignando los pacientes a dicho usuario.
