@@ -3,6 +3,10 @@
 * [Django Rest Framework](https://www.django-rest-framework.org/)
 
 ## athentication: 
+### Comentarios:
+* Añadir filtros, pagination y ordenamiento a los endpoints.
+
+
 * BaseUser
 * Doctor
 * Company
@@ -37,3 +41,6 @@
 * Preguntar sobre los paquetes y que tanto se relaciona con las tarifas. ¿Una empresa puede llegar a hacer un examen que no esté registrado en el tarifario?
 
 * Preguntar si se debe tener el dato de la empresa que está atendiendo al paciente.
+
+    * * created_at = models.DateTimeField(auto_now_add=True)
+    * * updated_at = models.DateTimeField(auto_now=True)

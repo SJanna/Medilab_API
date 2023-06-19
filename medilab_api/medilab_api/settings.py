@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'exam',
     'company',
 
+    #Apps de Django
+    'phonenumber_field',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -150,6 +152,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+PHONE_NUMBER_DEFAULT_REGION = 'CO'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
