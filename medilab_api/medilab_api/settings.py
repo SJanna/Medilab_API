@@ -46,8 +46,12 @@ INSTALLED_APPS = [
     #Mis apps
     'authentication',
     'appointment',
+<<<<<<< HEAD
     'exam',
     'company',
+=======
+    'corsheaders',
+>>>>>>> 72179cf2fad569ccd944bf4db5e0ea446560d43c
 
     #Apps de Django
     'auditlog',
@@ -61,7 +65,7 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -77,8 +81,23 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+<<<<<<< HEAD
     'auditlog.middleware.AuditlogMiddleware',
+=======
+    'corsheaders.middleware.CorsMiddleware',
+>>>>>>> 72179cf2fad569ccd944bf4db5e0ea446560d43c
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5173", # or whatever your domain is
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
 
 ROOT_URLCONF = 'medilab_api.urls'
 

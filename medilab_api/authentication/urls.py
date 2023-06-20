@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (BrigadeViewSet, CompanyViewSet, DoctorViewSet,
                     GenderViewSet, RoleViewSet, IdentificationTypeViewSet,
                     OtherUserViewSet, PatientViewSet, ReceptionistViewSet,
-                    UserViewSet, BacteriologistViewSet, AuditlogViewSet)
+                    UserViewSet, BacteriologistViewSet, AuditlogViewSet, LoginView)
 
 router = DefaultRouter()
 router.register(r'Roles', RoleViewSet)
@@ -23,5 +23,6 @@ router.register(r'Auditlog', AuditlogViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/login/', LoginView.as_view(), name='login'), # overwrite login
+    path('dj-rest-auth/', include('dj_rest_auth.urls')), # include other dj_rest_auth urls
 ]
