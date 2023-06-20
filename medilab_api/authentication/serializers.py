@@ -2,15 +2,17 @@ from rest_framework import serializers
 
 from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
                      Gender, IdentificationType, PatientUser, ReceptionistUser,
-                     Role, UserBase,OtherUser)
+                     Role, UserBase, OtherUser)
 
 from rest_framework import serializers
 from auditlog.models import LogEntry
+
 
 class LogEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = LogEntry
         fields = '__all__'
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,22 +26,26 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
-        instance.is_active = validated_data.get('is_active', instance.is_active)
+        instance.is_active = validated_data.get(
+            'is_active', instance.is_active)
         instance.is_staff = validated_data.get('is_staff', instance.is_staff)
-        instance.is_superuser = validated_data.get('is_superuser', instance.is_superuser)
+        instance.is_superuser = validated_data.get(
+            'is_superuser', instance.is_superuser)
         instance.set_password(validated_data.get('password'))
         instance.save()
         return instance
+
 
 class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         abstract = True
         fields = '__all__'
 
+
 class DoctorSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = DoctorUser
-        
+
 
 class PatientSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):

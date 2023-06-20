@@ -1,10 +1,11 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import (BrigadeViewSet, CompanyViewSet, DoctorViewSet,
-                    GenderViewSet, RoleViewSet, IdentificationTypeViewSet,
-                    OtherUserViewSet, PatientViewSet, ReceptionistViewSet,
-                    UserViewSet, BacteriologistViewSet, AuditlogViewSet, LoginView)
+from .views import (AuditlogViewSet, BacteriologistViewSet, BrigadeViewSet,
+                    CompanyViewSet, DoctorViewSet, GenderViewSet,
+                    IdentificationTypeViewSet, LoginView, OtherUserViewSet,
+                    PatientViewSet, ReceptionistViewSet, RoleViewSet,
+                    UserViewSet)
 
 router = DefaultRouter()
 router.register(r'Roles', RoleViewSet)
