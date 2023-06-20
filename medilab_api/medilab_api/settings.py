@@ -46,14 +46,18 @@ INSTALLED_APPS = [
     #Mis apps
     'authentication',
     'appointment',
-    'corsheaders',
+    'exam',
+    'company',
 
+    #Apps de Django
+    'auditlog',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -75,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'auditlog.middleware.AuditlogMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -161,7 +166,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -177,3 +181,5 @@ AUTH_USER_MODEL = 'authentication.UserBase'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
 
 # SITE_ID = 1
+
+AUDITLOG_INCLUDE_ALL_MODELS=True

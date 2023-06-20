@@ -1,5 +1,17 @@
 from rest_framework import serializers
-from .models import CompanyUser, DoctorUser, IdentificationType, UserBase, Group
+
+from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
+                     Gender, IdentificationType, PatientUser, ReceptionistUser,
+                     Role, UserBase, OtherUser)
+
+from rest_framework import serializers
+from auditlog.models import LogEntry
+
+
+class LogEntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogEntry
+        fields = '__all__'
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -7,7 +19,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserBase
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
-        # read_only_fields = ('sign_in_count', 'last_login', 'last_sign_in_ip')
 
     def create(self, validated_data):
         user = UserBase.objects.create_user(**validated_data)
@@ -25,40 +36,60 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 
-class GroupSerializer(serializers.ModelSerializer):
+class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Group
+        abstract = True
         fields = '__all__'
 
 
-class DoctorSerializer(serializers.ModelSerializer):
-    class Meta:
+class DoctorSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
         model = DoctorUser
-        fields = '__all__'
-        extra_kwargs = {'password': {'write_only': True},
-                        'userbase_ptr': {'read_only': True}}
-        # read_only_fields = ('sign_in_count', 'last_login', 'last_sign_in_ip')
-
-    def create(self, validated_data):
-        user = DoctorUser.objects.create_user(**validated_data)
-        return user
 
 
-class CompanySerializer(serializers.ModelSerializer):
-    class Meta:
+class PatientSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        model = PatientUser
+
+
+class CompanySerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
         model = CompanyUser
-        fields = '__all__'
-        extra_kwargs = {'password': {'write_only': True}}
-        extra_kwargs = {'password': {'write_only': True},
-                        'userbase_ptr': {'read_only': True}}
-        # read_only_fields = ('sign_in_count', 'last_login', 'last_sign_in_ip')
 
-    def create(self, validated_data):
-        user = CompanyUser.objects.create_user(**validated_data)
-        return user
+
+class BacteriologistSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        model = BacteriologistUser
+
+
+class ReceptionistSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        model = ReceptionistUser
+
+
+class OtherUserSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        model = OtherUser
+
+
+class BrigadeSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        model = BrigadeUser
 
 
 class IdentificationTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = IdentificationType
+        fields = '__all__'
+
+
+class GenderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gender
+        fields = '__all__'
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
         fields = '__all__'
