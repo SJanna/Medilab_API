@@ -1,10 +1,10 @@
 from django.apps import apps
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group
 from django.contrib.auth.signals import user_logged_in
 from django.db import models
-from django.db.models.signals import post_delete, post_save, post_migrate
+from django.db.models.signals import post_migrate
 from django.dispatch import receiver
+
 
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -15,7 +15,6 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-
 
     def create_superuser(self, username, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
@@ -39,41 +38,33 @@ class UserBase(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return self.is_superuser
 
-User = get_user_model()
 
-class AuditLogs(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='%(class)s_created_by')
-    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='%(class)s_updated_by')
-    created_ip = models.GenericIPAddressField(blank=True, null=True)
-    updated_ip = models.GenericIPAddressField(blank=True, null=True)
-
-    class Meta:
-        abstract = True
-
-class Gender(AuditLogs):
-    prefix = models.CharField(max_length=255, blank=True, null=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
-
-
-class IdentificationType(AuditLogs):
-    name = models.CharField(max_length=255)
-    prefix = models.CharField(max_length=10)
+class Gender(models.Model):
+    prefix = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
-        return f'{self.prefix} - {self.name}'
+        return self.name
 
-class Role(AuditLogs, Group):
+
+class IdentificationType(models.Model):
+    prefix = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Role(Group):
     pass
 
     def __str__(self):
         return self.name
 
 
-class Profile(AuditLogs):
-    first_name = models.CharField(max_length=55, blank=True, null=True)
-    last_name = models.CharField(max_length=55, blank=True, null=True)
+class Profile(models.Model):
+    first_name = models.CharField(max_length=55)
+    last_name = models.CharField(max_length=55)
     identification_type = models.ForeignKey(IdentificationType, on_delete=models.SET_NULL, null=True)
     identification_number = models.CharField(max_length=255, unique=True, primary_key=True)
     email = models.EmailField(blank=True, null=True)
@@ -81,9 +72,10 @@ class Profile(AuditLogs):
     department = models.CharField(max_length=55, blank=True, null=True)
     city = models.CharField(max_length=55, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
-    gender = models.ForeignKey(Gender, models.SET_NULL, blank=True, null=True) # Male, Female, Other
-    role = models.ForeignKey(Role, models.SET_NULL, blank=True, null=True) # Doctor, Patient, Company, Bacteriologist, Receptionist, Brigade, Other
+    gender = models.ForeignKey(Gender, models.SET_NULL, null=True) # Male, Female, Other
+    role = models.ForeignKey(Role, models.SET_NULL, null=True) # Doctor, Patient, Company, Bacteriologist, Receptionist, Brigade, Other
     last_login_ip = models.GenericIPAddressField(blank=True, null=True)
+    
     class Meta:
         abstract = True
 
@@ -150,13 +142,45 @@ def update_last_login_ip(sender, user, request, **kwargs):
             profile.save()
 
 
-
-#Crea los grupos/roles de usuarios
+# Crea los roles de forma automática en la base de datos si no existen
 @receiver(post_migrate)
-def create_default_groups(sender, **kwargs):
+def create_default_roles(sender, **kwargs):
     ROLES = [
         model.__name__.replace('User','') for model in apps.get_models() if issubclass(model, Profile)
     ]
     for role in ROLES:
         Role.objects.get_or_create(name=role)
+
+
+# Crea los tipos de identificación de forma automática en la base de datos si no existen
+@receiver(post_migrate)
+def create_default_identification_types(sender,**kwargs):
+    IDENTIFICATION_TYPES = [
+        ('Cédula de ciudadanía', 'CC'),
+        ('Cédula de extranjería', 'CE'),
+        ('Pasaporte', 'PAS'),
+        ('Registro civil', 'RC'),
+        ('Tarjeta de identidad', 'TI'),
+        ('Permiso de Trabajo', 'PT'),
+        ('Registro Único Tributario', 'RUT'),
+        ('Número de Identificación Tributaria', 'NIT'),
+        ('Número de Identificación Personal', 'NIP'),
+        ('Número de Identificación de Extranjero', 'NIE'),
+    ]
+    for name, prefix in IDENTIFICATION_TYPES:
+        IdentificationType.objects.get_or_create(name=name, prefix=prefix)
+
+
+# Crea los géneros de forma automática en la base de datos si no existen
+@receiver(post_migrate)
+def create_default_genders(sender, **kwargs):
+    GENDERS = [
+        ('Masculino', 'M'),
+        ('Femenino', 'F'),
+        ('Otro', 'O'),
+    ]
+    for name, prefix in GENDERS:
+        Gender.objects.get_or_create(name=name, prefix=prefix)
+
+
 # End Signals --------------------------------------------------------------------------------

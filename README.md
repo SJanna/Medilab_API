@@ -46,3 +46,5 @@
 
     * * created_at = models.DateTimeField(auto_now_add=True)
     * * updated_at = models.DateTimeField(auto_now=True)
+
+* Obtener los códigos de Actividad económica de las empresas desde una API.

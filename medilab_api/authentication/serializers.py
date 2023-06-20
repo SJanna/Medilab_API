@@ -4,6 +4,13 @@ from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
                      Gender, IdentificationType, PatientUser, ReceptionistUser,
                      Role, UserBase,OtherUser)
 
+from rest_framework import serializers
+from auditlog.models import LogEntry
+
+class LogEntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogEntry
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,36 +31,10 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class AuditLogsModelSerializer(serializers.ModelSerializer):
-    def create(self, validated_data):
-        validated_data['created_by'] = self.context['request'].user
-        validated_data['created_ip'] = self.context['request'].META['REMOTE_ADDR']
-
-        return super().create(validated_data)
-
-    def update(self, instance, validated_data):
-        validated_data['updated_by'] = self.context['request'].user
-        validated_data['updated_ip'] = self.context['request'].META['REMOTE_ADDR']
-
-        return super().update(instance, validated_data)
-
-
-class BaseUserSerializer(AuditLogsModelSerializer):
+class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         abstract = True
         fields = '__all__'
-        extra_kwargs = {'password': {'write_only': True}}
-        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at', 'role', 'userbase_ptr', 'last_login_ip', 'created_ip', 'updated_ip']
-
-    def create(self, validated_data):
-        validated_data['created_by'] = self.context['request'].user
-        validated_data['created_ip'] = self.context['request'].META['REMOTE_ADDR']
-
-        #El rol se asigna de acuerdo al nombre del modelo, por ejemplo: DoctorUser -> Doctor
-        validated_data['role'] = Role.objects.get(name=self.Meta.model.__name__.replace('User', ''))
-        user = self.Meta.model.objects.create_user(**validated_data)
-        return user
-
 
 class DoctorSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
@@ -90,21 +71,19 @@ class BrigadeSerializer(BaseUserSerializer):
         model = BrigadeUser
 
 
-class IdentificationTypeSerializer(AuditLogsModelSerializer):
+class IdentificationTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = IdentificationType
         fields = '__all__'
-        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at','created_ip','updated_ip']
 
 
-class GenderSerializer(AuditLogsModelSerializer):
+class GenderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gender
         fields = '__all__'
-        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at','created_ip','updated_ip']
 
-class RoleSerializer(AuditLogsModelSerializer):
+
+class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
         fields = '__all__'
-        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at','created_ip','updated_ip']

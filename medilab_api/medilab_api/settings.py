@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'company',
 
     #Apps de Django
-    'phonenumber_field',
+    'auditlog',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,6 +77,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'auditlog.middleware.AuditlogMiddleware',
 ]
 
 ROOT_URLCONF = 'medilab_api.urls'
@@ -152,8 +153,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-PHONE_NUMBER_DEFAULT_REGION = 'CO'
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -169,3 +168,5 @@ AUTH_USER_MODEL = 'authentication.UserBase'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
 
 # SITE_ID = 1
+
+AUDITLOG_INCLUDE_ALL_MODELS=True

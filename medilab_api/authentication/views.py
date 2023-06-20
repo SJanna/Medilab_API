@@ -1,15 +1,21 @@
-from rest_framework import filters, viewsets
+from auditlog.models import LogEntry
+from rest_framework import filters, generics, viewsets
 from rest_framework.pagination import PageNumberPagination
 
 from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
-                     Gender, Role, IdentificationType, PatientUser,
-                     ReceptionistUser, UserBase, OtherUser)
+                     Gender, IdentificationType, OtherUser, PatientUser,
+                     ReceptionistUser, Role, UserBase)
 from .serializers import (BacteriologistSerializer, BrigadeSerializer,
                           CompanySerializer, DoctorSerializer,
-                          GenderSerializer, RoleSerializer,
-                          IdentificationTypeSerializer, OtherUserSerializer,
+                          GenderSerializer, IdentificationTypeSerializer,
+                          LogEntrySerializer, OtherUserSerializer,
                           PatientSerializer, ReceptionistSerializer,
-                          UserSerializer)
+                          RoleSerializer, UserSerializer)
+
+
+class AuditlogViewSet(viewsets.ModelViewSet):
+    serializer_class = LogEntrySerializer
+    queryset= LogEntry.objects.all()
 
 
 class UserViewSet(viewsets.ModelViewSet):
