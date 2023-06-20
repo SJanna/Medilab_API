@@ -22,6 +22,8 @@
 * Añadir user_permissions al modelo de usuarios
 * Grupos y Permisos
 
+# Paginación
+* La idea es que desde el backend exista una paginación de 100, para no pasar todos los datos al frontend, y que el frontend se encargue de la paginación de 10 en 10 por ejemplo.
 
 # Comentarios
 * Por practicidad será mejor dejar todo el tema de los grupos y permisos para el final.

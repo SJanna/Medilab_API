@@ -1,14 +1,8 @@
 from rest_framework import serializers
 
 from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
-                     Gender, Group, IdentificationType, PatientUser,
-                     ReceptionistUser, UserBase, otherUser)
-
-
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = '__all__'
+                     Gender, IdentificationType, PatientUser, ReceptionistUser,
+                     Role, UserBase,OtherUser)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -49,11 +43,14 @@ class BaseUserSerializer(AuditLogsModelSerializer):
         abstract = True
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
-        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at', 'role', 'userbase_ptr', 'last_login_ip']
+        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at', 'role', 'userbase_ptr', 'last_login_ip', 'created_ip', 'updated_ip']
 
     def create(self, validated_data):
         validated_data['created_by'] = self.context['request'].user
-        validated_data['role'] = Group.objects.get(name=self.Meta.model.__name__.replace('User', ''))
+        validated_data['created_ip'] = self.context['request'].META['REMOTE_ADDR']
+
+        #El rol se asigna de acuerdo al nombre del modelo, por ejemplo: DoctorUser -> Doctor
+        validated_data['role'] = Role.objects.get(name=self.Meta.model.__name__.replace('User', ''))
         user = self.Meta.model.objects.create_user(**validated_data)
         return user
 
@@ -85,7 +82,7 @@ class ReceptionistSerializer(BaseUserSerializer):
 
 class OtherUserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
-        model = otherUser
+        model = OtherUser
 
 
 class BrigadeSerializer(BaseUserSerializer):
@@ -97,11 +94,17 @@ class IdentificationTypeSerializer(AuditLogsModelSerializer):
     class Meta:
         model = IdentificationType
         fields = '__all__'
-        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at']
+        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at','created_ip','updated_ip']
 
 
 class GenderSerializer(AuditLogsModelSerializer):
     class Meta:
         model = Gender
         fields = '__all__'
-        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at']
+        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at','created_ip','updated_ip']
+
+class RoleSerializer(AuditLogsModelSerializer):
+    class Meta:
+        model = Role
+        fields = '__all__'
+        read_only_fields = ['created_by', 'updated_by', 'created_at', 'updated_at','created_ip','updated_ip']

@@ -64,6 +64,12 @@ class IdentificationType(AuditLogs):
     def __str__(self):
         return f'{self.prefix} - {self.name}'
 
+class Role(AuditLogs, Group):
+    pass
+
+    def __str__(self):
+        return self.name
+
 
 class Profile(AuditLogs):
     first_name = models.CharField(max_length=55, blank=True, null=True)
@@ -71,12 +77,12 @@ class Profile(AuditLogs):
     identification_type = models.ForeignKey(IdentificationType, on_delete=models.SET_NULL, null=True)
     identification_number = models.CharField(max_length=255, unique=True, primary_key=True)
     email = models.EmailField(blank=True, null=True)
-    phone = models.CharField(max_length=20, blank=True, null=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
     department = models.CharField(max_length=55, blank=True, null=True)
     city = models.CharField(max_length=55, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     gender = models.ForeignKey(Gender, models.SET_NULL, blank=True, null=True) # Male, Female, Other
-    role = models.ForeignKey(Group, models.SET_NULL, blank=True, null=True) # Doctor, Patient, Company, Bacteriologist, Receptionist, Brigade, Other
+    role = models.ForeignKey(Role, models.SET_NULL, blank=True, null=True) # Doctor, Patient, Company, Bacteriologist, Receptionist, Brigade, Other
     last_login_ip = models.GenericIPAddressField(blank=True, null=True)
     class Meta:
         abstract = True
@@ -115,7 +121,7 @@ class BrigadeUser(UserBase, Profile):
     def __str__(self):
         return f'Brigade {self.first_name} {self.last_name}'
 
-class otherUser(UserBase, Profile):
+class OtherUser(UserBase, Profile):
     pass
     def __str__(self):
         return f'Other {self.first_name} {self.last_name}'      
@@ -148,7 +154,9 @@ def update_last_login_ip(sender, user, request, **kwargs):
 #Crea los grupos/roles de usuarios
 @receiver(post_migrate)
 def create_default_groups(sender, **kwargs):
-    ROLES = ['Doctor', 'Patient', 'Company', 'Bacteriologist', 'Receptionist']
+    ROLES = [
+        model.__name__.replace('User','') for model in apps.get_models() if issubclass(model, Profile)
+    ]
     for role in ROLES:
-        Group.objects.get_or_create(name=role)
+        Role.objects.get_or_create(name=role)
 # End Signals --------------------------------------------------------------------------------

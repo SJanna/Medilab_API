@@ -2,11 +2,11 @@ from rest_framework import filters, viewsets
 from rest_framework.pagination import PageNumberPagination
 
 from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
-                     Gender, Group, IdentificationType, PatientUser,
-                     ReceptionistUser, UserBase, otherUser)
+                     Gender, Role, IdentificationType, PatientUser,
+                     ReceptionistUser, UserBase, OtherUser)
 from .serializers import (BacteriologistSerializer, BrigadeSerializer,
                           CompanySerializer, DoctorSerializer,
-                          GenderSerializer, GroupSerializer,
+                          GenderSerializer, RoleSerializer,
                           IdentificationTypeSerializer, OtherUserSerializer,
                           PatientSerializer, ReceptionistSerializer,
                           UserSerializer)
@@ -16,25 +16,33 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = UserBase.objects.all()
     permission_classes = []
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['username']
-    ordering_fields = ['username']
-    pagination_class = PageNumberPagination
-    pagination_class.page_size = 10
+    # filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    # search_fields = ['username']
+    # ordering_fields = ['username']
+    # pagination_class = PageNumberPagination
+    # pagination_class.page_size = 10
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class RoleViewSet(viewsets.ModelViewSet):
     permission_classes = []
-    serializer_class = GroupSerializer
-    queryset = Group.objects.all()
-
+    serializer_class = RoleSerializer
+    queryset = Role.objects.all()
+    # filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    # ordering_fields = ['created_at', 'updated_at']
+    # search_fields = ['name']
+    # pagination_class = PageNumberPagination
+    # pagination_class.page_size = 2
 
 class DoctorViewSet(viewsets.ModelViewSet):
     permission_classes = []
     serializer_class = DoctorSerializer
     queryset = DoctorUser.objects.all()
-
-
+    # filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    # search_fields = ['username', 'first_name', 'last_name', 'identification_number']
+    # ordering_fields = ['created_at', 'updated_at']
+    # pagination_class = PageNumberPagination
+    # page_size = 10
+    
 class CompanyViewSet(viewsets.ModelViewSet):
     permission_classes = []
     serializer_class = CompanySerializer
@@ -59,7 +67,7 @@ class ReceptionistViewSet(viewsets.ModelViewSet):
 class OtherUserViewSet(viewsets.ModelViewSet):
     permission_classes = []
     serializer_class = OtherUserSerializer
-    queryset = otherUser.objects.all()
+    queryset = OtherUser.objects.all()
 
 class BacteriologistViewSet(viewsets.ModelViewSet):
     permission_classes = []

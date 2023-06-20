@@ -2,15 +2,15 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from .views import (BrigadeViewSet, CompanyViewSet, DoctorViewSet,
-                    GenderViewSet, GroupViewSet, IdentificationTypeViewSet,
+                    GenderViewSet, RoleViewSet, IdentificationTypeViewSet,
                     OtherUserViewSet, PatientViewSet, ReceptionistViewSet,
                     UserViewSet)
 
 router = DefaultRouter()
-router.register(r'groups', GroupViewSet)
+router.register(r'Roles', RoleViewSet)
 router.register(r'IdentificationType', IdentificationTypeViewSet)
 router.register(r'Gender', GenderViewSet)
-router.register(r'users', UserViewSet)
+router.register(r'Users', UserViewSet)
 router.register(r'Doctors', DoctorViewSet)
 router.register(r'Companies', CompanyViewSet)
 router.register(r'Patients', PatientViewSet)
