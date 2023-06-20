@@ -1,0 +1,4 @@
+dj_rest_auth==4.0.1
+Django==4.2.2
+django_auditlog==2.3.0
+djangorestframework==3.14.0

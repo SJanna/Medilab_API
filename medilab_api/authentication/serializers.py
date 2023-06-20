@@ -5,14 +5,6 @@ from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
                      Role, UserBase, OtherUser)
 
 from rest_framework import serializers
-from auditlog.models import LogEntry
-
-
-class LogEntrySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LogEntry
-        fields = '__all__'
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,6 +32,14 @@ class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         abstract = True
         fields = '__all__'
+        extra_kwargs = {'password': {'write_only': True}}
+        read_only_fields = ['role','last_login_ip']
+
+    def create(self, validated_data):
+        validated_data['role'] = Role.objects.get(name=self.Meta.model.__name__.replace('User', ''))
+        validated_data['last_login_ip'] = self.context['request'].META['REMOTE_ADDR']
+        user = self.Meta.model.objects.create_user(**validated_data)
+        return user
 
 
 class DoctorSerializer(BaseUserSerializer):

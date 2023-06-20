@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import (AuditlogViewSet, BacteriologistViewSet, BrigadeViewSet,
+from .views import (BacteriologistViewSet, BrigadeViewSet,
                     CompanyViewSet, DoctorViewSet, GenderViewSet,
                     IdentificationTypeViewSet, LoginView, OtherUserViewSet,
                     PatientViewSet, ReceptionistViewSet, RoleViewSet,
@@ -19,7 +19,6 @@ router.register(r'Brigades', BrigadeViewSet)
 router.register(r'Receptionists', ReceptionistViewSet)
 router.register(r'Bacteriologists', BacteriologistViewSet)
 router.register(r'OtherUsers', OtherUserViewSet)
-router.register(r'Auditlog', AuditlogViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

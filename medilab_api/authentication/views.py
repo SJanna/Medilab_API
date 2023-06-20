@@ -1,15 +1,23 @@
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .permissions import IsReceptionistUser, IsDoctorUser, IsBacteriologistUser, IsCompanyUser
-from .models import UserBase, Group, DoctorUser, CompanyUser, IdentificationType
-from .serializers import CompanySerializer, DoctorSerializer, IdentificationTypeSerializer, UserSerializer
-from rest_framework.response import Response
 from dj_rest_auth.views import LoginView as DefaultLoginView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
-from auditlog.models import LogEntry
 from rest_framework import filters, generics, viewsets
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+
+from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
+                     Gender, IdentificationType, OtherUser, PatientUser,
+                     ReceptionistUser, Role, UserBase)
+
+from .permissions import (IsBacteriologistUser, IsCompanyUser, IsDoctorUser,
+                          IsReceptionistUser, IsSelf)
+from .serializers import (BacteriologistSerializer, BrigadeSerializer,
+                          CompanySerializer, DoctorSerializer,
+                          GenderSerializer, IdentificationTypeSerializer,
+                        OtherUserSerializer,
+                          PatientSerializer, ReceptionistSerializer,
+                          RoleSerializer, UserSerializer)
+
 
 class LoginView(DefaultLoginView):
     @method_decorator(ensure_csrf_cookie)
@@ -20,29 +28,11 @@ class LoginView(DefaultLoginView):
             if token:
                 response.set_cookie('auth_token', token, httponly=True, samesite='Strict', secure=True)
         return response
-    
-
-
-from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
-                     Gender, IdentificationType, OtherUser, PatientUser,
-                     ReceptionistUser, Role, UserBase)
-from .serializers import (BacteriologistSerializer, BrigadeSerializer,
-                          CompanySerializer, DoctorSerializer,
-                          GenderSerializer, IdentificationTypeSerializer,
-                          LogEntrySerializer, OtherUserSerializer,
-                          PatientSerializer, ReceptionistSerializer,
-                          RoleSerializer, UserSerializer)
-
-
-class AuditlogViewSet(viewsets.ModelViewSet):
-    serializer_class = LogEntrySerializer
-    queryset= LogEntry.objects.all()
-
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = UserBase.objects.all()
-    permission_classes = []
+    permission_classes = [IsSelf]
     # filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     # search_fields = ['username']
     # ordering_fields = ['username']
