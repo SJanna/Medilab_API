@@ -5,13 +5,12 @@ from .views import (BacteriologistViewSet, BrigadeViewSet,
                     CompanyViewSet, DoctorViewSet, GenderViewSet,
                     IdentificationTypeViewSet, LoginView, OtherUserViewSet,
                     PatientViewSet, ReceptionistViewSet, RoleViewSet,
-                    UserViewSet)
+                    UserCreateAPIView, UserListAPIView)
 
 router = DefaultRouter()
 router.register(r'Roles', RoleViewSet)
 router.register(r'IdentificationType', IdentificationTypeViewSet)
 router.register(r'Gender', GenderViewSet)
-router.register(r'Users', UserViewSet)
 router.register(r'Doctors', DoctorViewSet)
 router.register(r'Companies', CompanyViewSet)
 router.register(r'Patients', PatientViewSet)
@@ -25,4 +24,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('dj-rest-auth/login/', LoginView.as_view(), name='login'), # overwrite login
     path('dj-rest-auth/', include('dj_rest_auth.urls')), # include other dj_rest_auth urls
+    path('new_user', UserCreateAPIView.as_view(), name='new_user'),
+    path('user_list', UserListAPIView.as_view(), name='user_list'),
 ]

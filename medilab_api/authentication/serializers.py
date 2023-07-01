@@ -1,10 +1,14 @@
 from rest_framework import serializers
 
 from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
-                     Gender, IdentificationType, PatientUser, ReceptionistUser,
-                     Role, UserBase, OtherUser)
+                     Gender, IdentificationType, OtherUser, PatientUser,
+                     ReceptionistUser, Role, UserBase, Profile)
 
-from rest_framework import serializers
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,50 +37,92 @@ class BaseUserSerializer(serializers.ModelSerializer):
         abstract = True
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
-        read_only_fields = ['role','last_login_ip']
+        read_only_fields = ['role','last_login_ip','last_login_date','userbase_ptr', 'login_count']
 
     def create(self, validated_data):
         validated_data['role'] = Role.objects.get(name=self.Meta.model.__name__.replace('User', ''))
-        validated_data['last_login_ip'] = self.context['request'].META['REMOTE_ADDR']
         user = self.Meta.model.objects.create_user(**validated_data)
         return user
 
 
+class BaseUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        abstract = True
+        fields = '__all__'
+        read_only_fields = ['username', 'role', 'last_login_ip', 'last_login_date', 'userbase_ptr', 'login_count', 'password', 'identification_number', 'role']
+
+
+# Doctor serializers ----------------------------------------------------------
 class DoctorSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = DoctorUser
 
+class DoctorUpdateSerializer(BaseUpdateSerializer):
+    class Meta(BaseUpdateSerializer.Meta):
+        model = DoctorUser
+# ------------------------------------------------------------------------------
 
+# Patient serializers ---------------------------------------------------------
 class PatientSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = PatientUser
 
+class PatientUpdateSerializer(BaseUpdateSerializer):
+    class Meta(BaseUpdateSerializer.Meta):
+        model = PatientUser
+# ------------------------------------------------------------------------------
 
+# Company serializers ---------------------------------------------------------
 class CompanySerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = CompanyUser
 
+class CompanyUpdateSerializer(BaseUpdateSerializer):
+    class Meta(BaseUpdateSerializer.Meta):
+        model = CompanyUser
+# ------------------------------------------------------------------------------
 
+# Bacteriologist serializers --------------------------------------------------
 class BacteriologistSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = BacteriologistUser
 
+class BacteriologistUpdateSerializer(BaseUpdateSerializer):
+    class Meta(BaseUpdateSerializer.Meta):
+        model = BacteriologistUser
+# ------------------------------------------------------------------------------
 
+# Receptionist serializers ----------------------------------------------------
 class ReceptionistSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = ReceptionistUser
 
+class ReceptionistUpdateSerializer(BaseUpdateSerializer):
+    class Meta(BaseUpdateSerializer.Meta):
+        model = ReceptionistUser
+# ------------------------------------------------------------------------------
 
+# OtherUser serializers -------------------------------------------------------
 class OtherUserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = OtherUser
 
+class OtherUserUpdateSerializer(BaseUpdateSerializer):
+    class Meta(BaseUpdateSerializer.Meta):
+        model = OtherUser
+# ------------------------------------------------------------------------------
 
+# Brigade serializers ---------------------------------------------------------
 class BrigadeSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = BrigadeUser
+    
+class BrigadeUpdateSerializer(BaseUpdateSerializer):
+    class Meta(BaseUpdateSerializer.Meta):
+        model = BrigadeUser
+# ------------------------------------------------------------------------------
 
-
+# Other serializers -----------------------------------------------------------
 class IdentificationTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = IdentificationType
@@ -93,3 +139,4 @@ class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
         fields = '__all__'
+# ------------------------------------------------------------------------------

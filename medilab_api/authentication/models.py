@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.apps import apps
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group
 from django.contrib.auth.signals import user_logged_in
@@ -21,6 +22,12 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(username, password, **extra_fields)
 
+class Role(Group):
+    pass
+
+    def __str__(self):
+        return self.name
+    
 
 class UserBase(AbstractBaseUser):
     last_login = None
@@ -28,6 +35,7 @@ class UserBase(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    role = models.ForeignKey(Role, models.SET_NULL, null=True) # Doctor, Patient, Company, Bacteriologist, Receptionist, Brigade, Other
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
     objects = UserManager()
@@ -55,27 +63,20 @@ class IdentificationType(models.Model):
         return self.name
 
 
-class Role(Group):
-    pass
-
-    def __str__(self):
-        return self.name
-
-
 class Profile(models.Model):
     first_name = models.CharField(max_length=55)
     last_name = models.CharField(max_length=55)
     identification_type = models.ForeignKey(IdentificationType, on_delete=models.SET_NULL, null=True)
-    identification_number = models.CharField(max_length=255, unique=True, primary_key=True)
+    identification_number = models.CharField(max_length=255, unique=True)
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
     department = models.CharField(max_length=55, blank=True, null=True)
     city = models.CharField(max_length=55, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     gender = models.ForeignKey(Gender, models.SET_NULL, null=True) # Male, Female, Other
-    role = models.ForeignKey(Role, models.SET_NULL, null=True) # Doctor, Patient, Company, Bacteriologist, Receptionist, Brigade, Other
     last_login_ip = models.GenericIPAddressField(blank=True, null=True)
-    
+    last_login_date = models.DateTimeField(blank=True, null=True)
+    login_count = models.IntegerField(default=0)
     class Meta:
         abstract = True
 
@@ -125,7 +126,7 @@ class OtherUser(UserBase, Profile):
 
 #Signals --------------------------------------------------------------------------------
 @receiver(user_logged_in)
-def update_last_login_ip(sender, user, request, **kwargs):
+def update_last_login_data(sender, user, request, **kwargs):
     # Obtener todos los modelos que heredan de Profile
     profile_models = [
         model.__name__.lower() for model in apps.get_models() if issubclass(model, Profile)
@@ -138,9 +139,13 @@ def update_last_login_ip(sender, user, request, **kwargs):
             profile = getattr(user, model_name)
             # Actualizar la última dirección IP de inicio de sesión
             setattr(profile, 'last_login_ip', request.META.get('REMOTE_ADDR'))
+            setattr(profile, 'last_login_date', timezone.now())
+            # Incrementar el contador de inicio de sesión
+            setattr(profile, 'login_count', profile.login_count + 1)
             # Guardar los cambios en el perfil
             profile.save()
 
+# Cración de roles, tipos de identificación y géneros por defecto en la base de datos ----------------------------
 
 # Crea los roles de forma automática en la base de datos si no existen
 @receiver(post_migrate)
@@ -150,7 +155,6 @@ def create_default_roles(sender, **kwargs):
     ]
     for role in ROLES:
         Role.objects.get_or_create(name=role)
-
 
 # Crea los tipos de identificación de forma automática en la base de datos si no existen
 @receiver(post_migrate)
@@ -170,7 +174,6 @@ def create_default_identification_types(sender,**kwargs):
     for name, prefix in IDENTIFICATION_TYPES:
         IdentificationType.objects.get_or_create(name=name, prefix=prefix)
 
-
 # Crea los géneros de forma automática en la base de datos si no existen
 @receiver(post_migrate)
 def create_default_genders(sender, **kwargs):
@@ -181,6 +184,6 @@ def create_default_genders(sender, **kwargs):
     ]
     for name, prefix in GENDERS:
         Gender.objects.get_or_create(name=name, prefix=prefix)
-
+# ---------------------------------------------------------------------------------------------------------------
 
 # End Signals --------------------------------------------------------------------------------
