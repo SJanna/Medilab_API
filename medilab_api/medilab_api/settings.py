@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-=@c-8v+8gru0qu7+%zz4&!!%snm68((!kuw+jo4jb@x#roawet
 DEBUG = True
 
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -62,7 +61,7 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -71,6 +70,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,19 +79,40 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'auditlog.middleware.AuditlogMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
+# These would make the API only accessible over https.
+# INVESTIGATE ABOUT SECURE_HSTS_SECONDS, SECURE_HSTS_INCLUDE_SUBDOMAINS, SECURE_HSTS_PRELOAD.
+
+# Security settings ------------------------------------------------------------
+## Authentication is make with cookies so we need to configure them.
+## Cookies are stored in the browser and sent to the server with every request.
+## The server can send cookies to the browser in the header of the response.
+## Right now it stores three cookies: sessionid, csrftoken and auth_token.
+
+# Only this domain is allowed to access the API.
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173", # or whatever your domain is
 ]
 
+# CORS_ORIGIN_ALLOW_ALL = True
+
+# Only this domain is allowed to send cookies. 
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:5173",
+]
+
+# Allow cookies to be included in cross-site HTTP requests.
 CORS_ALLOW_CREDENTIALS = True
 
-SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SECURE = True
+# Allow cookies to be included in cross-site AND only send cookies over https. Very important.
+SESSION_COOKIE_SAMESITE = 'None' # Allow cross-site cookies.
+SESSION_COOKIE_SECURE = True # Only send cookies over https.  
+
+# Similar to SESSION_COOKIE_SAMESITE and SESSION_COOKIE_SECURE but for CSRF cookies.
+CSRF_COOKIE_SAMESITE = 'None' # Allow cross-site cookies.
+CSRF_COOKIE_SECURE = True # Only send cookies over https.
+# ------------------------------------------------------------------------------
 
 ROOT_URLCONF = 'medilab_api.urls'
 

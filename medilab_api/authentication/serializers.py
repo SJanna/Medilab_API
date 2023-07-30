@@ -7,6 +7,8 @@ from .models import (BacteriologistUser, BrigadeUser, CompanyUser, DoctorUser,
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
+    role = serializers.StringRelatedField()
+    
     class Meta:
         model = UserBase
         fields = '__all__'
@@ -29,11 +31,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class BaseUserSerializer(serializers.ModelSerializer):
+    
     class Meta:
         abstract = True
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
-        read_only_fields = ['role','last_login_ip']
+        read_only_fields = ['role','last_login_ip','userbase_ptr']
 
     def create(self, validated_data):
         validated_data['role'] = Role.objects.get(name=self.Meta.model.__name__.replace('User', ''))
@@ -53,6 +56,8 @@ class PatientSerializer(BaseUserSerializer):
 
 
 class CompanySerializer(BaseUserSerializer):
+    role = serializers.StringRelatedField()
+    
     class Meta(BaseUserSerializer.Meta):
         model = CompanyUser
 
@@ -90,6 +95,10 @@ class GenderSerializer(serializers.ModelSerializer):
 
 
 class RoleSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Role
         fields = '__all__'
+
+        
+        
