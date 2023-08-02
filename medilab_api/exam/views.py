@@ -1,7 +1,10 @@
 from django.shortcuts import render
+
+# Create your views here.
+from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Tariff, Exam, Package, ExamPrice, City
-from .serializers import TariffSerializer, ExamSerializer, PackageSerializer, ExamPackageSerializer, CitySerializer
+from .models import Tariff, Exam, Package, ExamPrice
+from .serializers import TariffSerializer, ExamSerializer, PackageSerializer, ExamPackageSerializer
 # Create your views here.
 
 
@@ -24,8 +27,3 @@ class PackageViewSet(viewsets.ModelViewSet):
     permission_classes = []
     serializer_class = PackageSerializer
     queryset = Package.objects.all()
-
-class CityViewSet(viewsets.ModelViewSet):
-    permission_classes = []
-    serializer_class = CitySerializer
-    queryset = City.objects.all()

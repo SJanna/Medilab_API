@@ -1,19 +1,15 @@
+from django.shortcuts import render
 from rest_framework import viewsets
-from .models import CompanyInfo, MissionCompany, EconomyActivity
-from .serializers import CompanyInfoSerializer, MissionCompanySerializer, EconomyActivitySerializer
+from .models import Company, MissionCompany
+from .serializers import CompanySerializer, MissionCompanySerializer
 # Create your views here.
 
-class CompanyInfoViewSet(viewsets.ModelViewSet):
+class CompanyViewSet(viewsets.ModelViewSet):
     permission_classes = []
-    serializer_class = CompanyInfoSerializer
-    queryset = CompanyInfo.objects.all()
-
+    serializer_class = CompanySerializer
+    queryset = Company.objects.all()
+    
 class MissionCompanyViewSet(viewsets.ModelViewSet):
     permission_classes = []
     serializer_class = MissionCompanySerializer
     queryset = MissionCompany.objects.all()
-
-class EconomyActivityViewSet(viewsets.ModelViewSet):
-    permission_classes = []
-    serializer_class = EconomyActivitySerializer
-    queryset = EconomyActivity.objects.all()

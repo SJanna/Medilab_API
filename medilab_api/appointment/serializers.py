@@ -1,17 +1,7 @@
 from rest_framework import serializers
-from .models import DoctorInfo, Appointment, CompanySection
+from .models import Appointment
 
-class DoctorInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DoctorInfo
-        fields = '__all__'
-
-class AppointmentSerializer(serializers.ModelSerializer):
+class AppointmentSerializer(serializers.Serializer):
     class Meta:
         model = Appointment
-        fields = '__all__'
-        
-class CompanySectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CompanySection
-        fields = '__all__'
+        field = '__all__'

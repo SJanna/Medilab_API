@@ -1,19 +1,10 @@
 from django.db import models
-# from appointment.models import City
 
-class City(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
-
-
+# Create your models here.
 class Tariff(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     exams_prices = models.ManyToManyField('ExamPrice', related_name='exams_prices', blank=True) #La lista de examenes(con precio) que tiene el tarifario
-    city = models.ForeignKey(City, related_name='city', on_delete=models.CASCADE, blank=True, null=True)
+    city = models.CharField(max_length=50)
     active = models.BooleanField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -22,8 +13,7 @@ class Tariff(models.Model):
     def __str__(self):
         return self.name + ' - ' + self.city.name
     
-
-# Lista de todos los examnes posibles.
+# Lista de todos los exámenes posibles.
 class Exam(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
@@ -32,7 +22,7 @@ class Exam(models.Model):
     def __str__(self):
         return self.name
 
-# Una lista de examenes con un precio
+# Una lista de exámenes con un precio
 class Package(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     exams = models.ManyToManyField(Exam, related_name='exams', blank=True) #Cambio

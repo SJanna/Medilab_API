@@ -1,0 +1,13 @@
+from authentication.models import Doctor, User, Patient, Role
+
+# Create roles
+doctor_role = Role.objects.create(name='Doctor')
+patient_role = Role.objects.create(name='Patient')
+
+# Create a user with a doctor role
+user1 = User.objects.create(username='doctor_user', role=doctor_role)
+doctor = Doctor.objects.create(user=user1, specialty='Cardiology', license_number='12345')
+
+# Create a user with a patient role
+user2 = User.objects.create(username='patient_user', role=patient_role)
+patient = Patient.objects.create(user=user2, medical_record_number='67890')

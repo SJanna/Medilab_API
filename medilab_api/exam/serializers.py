@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Tariff, Exam, Package, ExamPrice, City
+from .models import Tariff, Exam, Package, ExamPrice
 
 class TariffSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,9 +19,4 @@ class ExamPackageSerializer(serializers.ModelSerializer):
 class PackageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Package
-        fields = '__all__'
-        
-class CitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = City
         fields = '__all__'
