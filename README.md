@@ -1,8 +1,8 @@
 <p><a target="_blank" href="https://app.eraser.io/workspace/qzVp6cXhCuxrzBjIWa63" id="edit-in-eraser-github-link"><img alt="Edit in Eraser" src="https://firebasestorage.googleapis.com/v0/b/second-petal-295822.appspot.com/o/images%2Fgithub%2FOpen%20in%20Eraser.svg?alt=media&amp;token=968381c8-a7e7-472a-8ed6-4a6626da5501"></a></p>
 
 # Medilab_API
-![image.png](/.eraser/qzVp6cXhCuxrzBjIWa63___kAGHDJMp1NWYNPAw7QGTKA9Pucz1___2VfYDddi8OnlJQZLqnrmi.png "image.png")
-
+CLASS DIAGRAM
+![image](https://github.com/SJanna/Medilab_API/assets/70728090/d720955d-d41f-4150-99ee-406f6a6fbc96)
 
 
 # Django Aplications
