@@ -7,16 +7,16 @@ from exam.models import Package
 # Create your models here.
 class Appointment(models.Model):
     turn = models.IntegerField(blank=True, null=True)
-    # Información del paciente
+    # Información del paciente ------------------------------------------------------------------------------------
     patient = models.ForeignKey(Patient, models.DO_NOTHING, blank=True, null=True)
-    
-    # Información del Médico
+    # ------------------------------------------------------------------------------------------------------------
+    # Información del Médico -------------------------------------------------------------------------------------
     doctor = models.ForeignKey(Doctor, models.DO_NOTHING, blank=True, null=True)
-    
-    # Empresa: (mission company)*
+    # ------------------------------------------------------------------------------------------------------------
+    # Empresa: (mission company) ---------------------------------------------------------------------------------
     company = models.ForeignKey(Company, models.DO_NOTHING, blank=True, null=True)
-    
-    # Datos de la recepción
+    # ------------------------------------------------------------------------------------------------------------
+    # Datos de la recepción --------------------------------------------------------------------------------------
     department = models.CharField(max_length=55, blank=True, null=True)
     city = models.CharField(max_length=55, blank=True, null=True) # City where the patient is registered.
     occupation = models.CharField(max_length=50, blank=True, null=True)
@@ -26,11 +26,12 @@ class Appointment(models.Model):
     company_section = models.CharField(max_length=50, blank=True, null=True)
     package = models.ForeignKey(Package, models.DO_NOTHING, blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
-    
+    # ------------------------------------------------------------------------------------------------------------
+    # Otros datos ------------------------------------------------------------------------------------------------
     registered_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    
+    # ------------------------------------------------------------------------------------------------------------
 
 class MedicalRecord(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='patient')
