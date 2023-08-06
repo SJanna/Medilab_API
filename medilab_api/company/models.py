@@ -4,7 +4,6 @@ from exam.models import Tariff
 # Create your models here.
 class Company(models.Model):
     economy_activity = models.CharField(max_length=50, blank=True, null=True)
-    # This is a comment.
     observations = models.TextField(blank=True, null=True)
     # balance = models.FloatField(blank=True, null=True)
     # has_limit

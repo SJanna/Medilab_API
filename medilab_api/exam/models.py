@@ -18,6 +18,9 @@ class Exam(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    # reference_value; En vez de tener una clase defaultExams para guardar 
+    # los precios de loo examenes por defecto, se puede guardar el precio en
+    # esta clase llamándolos valores de referencia.
 
     def __str__(self):
         return self.name
