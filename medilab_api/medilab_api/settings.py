@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'exam',
     'company',
     'appointment',
+    'medical_record',
 
     #Apps de Django
     'auditlog',

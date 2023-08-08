@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from .models import Appointment
 
-class AppointmentSerializer(serializers.Serializer):
+class AppointmentSerializer(serializers.ModelSerializer):
+    turn = serializers.ReadOnlyField()
+    
     class Meta:
         model = Appointment
-        field = '__all__'
+        
+        fields = '__all__'

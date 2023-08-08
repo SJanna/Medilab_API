@@ -2,12 +2,12 @@ from django.db import models
 from authentication.models import User, Patient, Doctor
 from company.models import Company
 from exam.models import Package
-
+from django.utils import timezone
 
 # Create your models here.
 class Appointment(models.Model):
     turn = models.IntegerField(blank=True, null=True)
-    # Información del paciente ------------------------------------------------------------------------------------
+    # Información del paciente -----------------------------------------------------------------------------------
     patient = models.ForeignKey(Patient, models.DO_NOTHING, blank=True, null=True)
     # ------------------------------------------------------------------------------------------------------------
     # Información del Médico -------------------------------------------------------------------------------------
@@ -32,13 +32,27 @@ class Appointment(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     # ------------------------------------------------------------------------------------------------------------
+    
+    def __str__(self):
+        return str(self.turn) + str(self.doctor)
+        
+    
+    def save(self, *args, **kwargs):
+        try:
+            # Check if it's the same day
+            last_appointment = Appointment.objects.filter(date=timezone.now()).latest('created_at')
+            self.turn = last_appointment.turn + 1
+        except Appointment.DoesNotExist:
+            # This is the first appointment for the day or the very first appointment in the database
+            self.turn = 1
+        super(Appointment, self).save(*args, **kwargs)
+
+
 
 # Medical Record correspond to the information of one Appointment.
 class MedicalRecord(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='patient')
     appointment = models.ForeignKey(Appointment, models.DO_NOTHING, blank=True, null=True)
-    
-    
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     

@@ -68,7 +68,7 @@ class Patient(models.Model):
     profile_picture = models.TextField(blank=True, null=True)
     fingerprint = models.CharField(max_length=255, blank=True, null=True)
     signature = models.CharField(max_length=255, blank=True, null=True)
-    date_of_birth = models.CharField(max_length=255, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
     place_of_birth = models.CharField(max_length=255, blank=True, null=True)
     dependant = models.CharField(max_length=255, blank=True, null=True)
     schooling = models.CharField(max_length=50,blank=True, null=True)
