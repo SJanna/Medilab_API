@@ -7,4 +7,4 @@ router.register(r'Exam', ExamViewSet)
 router.register(r'ExamPrice', ExamPriceViewSet)
 router.register(r'Package', PackageViewSet)
 
-urlpatterns = router.urls
+urlpatterns = router.urls                               
