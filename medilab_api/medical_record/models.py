@@ -592,22 +592,6 @@ class Visiometry(models.Model):
     class Meta:
         managed = False
         db_table = 'visiometries'
-
-
-class Espirometry(models.Model):
-    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-    file = models.CharField(blank=True, null=True)
-    observations = models.TextField(blank=True, null=True)
-    user = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True)
-    status = models.IntegerField(blank=True, null=True)
-    result = models.BooleanField(blank=True, null=True)
-    
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'espirometries'
         
 
 class Audiometry(models.Model):
@@ -675,3 +659,50 @@ class AudiometryRecommendations(models.Model):
     class Meta:
         managed = False
         db_table = 'audiometry_recommendations'
+        
+
+class Espirometry(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
+    file = models.CharField(blank=True, null=True)
+    observations = models.TextField(blank=True, null=True)
+    doctor = models.ForeignKey(Doctor, models.DO_NOTHING, blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+    result = models.BooleanField(blank=True, null=True)
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'espirometries'
+        
+
+class PsicologicalTests(models.Model):
+    file = models.CharField(blank=True, null=True)
+    observations = models.TextField(blank=True, null=True)
+    appointment_exam = models.ForeignKey(AppointmentExams, models.DO_NOTHING, blank=True, null=True)
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    user = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+    result = models.BooleanField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'psicological_tests'
+
+
+class XRays(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
+    file = models.CharField(blank=True, null=True)
+    observations = models.TextField(blank=True, null=True)
+    doctor = models.ForeignKey(Doctor, models.DO_NOTHING, blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+    result = models.BooleanField(blank=True, null=True)
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'x_rays'
+
+
