@@ -7,24 +7,22 @@ from django.contrib.auth.models import Group
 
 
 class Role(models.Model):
-    name = models.CharField(max_length=50)
-    # It could be FK too.
-    # group = models.OneToOneField(Group, on_delete=models.CASCADE, null=True)
-
+    name = models.CharField(max_length=255, unique=True)
+    
     def __str__(self):
         return self.name
 
 
 class User(AbstractUser):
     roles = models.ForeignKey(
-        Role, on_delete=models.CASCADE)
+        Role, on_delete=models.CASCADE, blank=True, null=True)
     identification_type = models.CharField(max_length=50)
     identification_number = models.CharField(
         max_length=255, unique=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
     email = models.CharField(max_length=255)
-    department = models.CharField(max_length=55, blank=True, null=True)
-    city = models.CharField(max_length=50, blank=True, null=True)
+    department = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(max_length=50, blank=True, null=True)
     last_login_ip = models.GenericIPAddressField(blank=True, null=True)
@@ -48,30 +46,27 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    medical_record_number = models.CharField(max_length=50)
+    medical_record_number = models.CharField(max_length=255)
     # profile_picture = models.TextField(blank=True, null=True)
     fingerprint = models.CharField(max_length=255, blank=True, null=True)
     signature = models.CharField(max_length=255, blank=True, null=True)
-    date_of_birth = models.DateField(blank=True, null=True)
+    date_of_birth = models.DateField()
     place_of_birth = models.CharField(max_length=255, blank=True, null=True)
-    dependant = models.CharField(max_length=255, blank=True, null=True)
-    schooling = models.CharField(max_length=50,blank=True, null=True)
-    zone = models.CharField(max_length=50,blank=True, null=True)
+    dependant = models.CharField(max_length=255, blank=True, null=True) # Num. de personas a cargo.
+    schooling = models.CharField(max_length=255,blank=True, null=True)
+    zone = models.CharField(max_length=255,blank=True, null=True)
     stratum = models.CharField(max_length=50,blank=True, null=True)
-    marital_status = models.CharField(max_length=50,blank=True, null=True)
+    marital_status = models.CharField(max_length=255,blank=True, null=True)
     blood_type = models.CharField(max_length=255, blank=True, null=True)
     photo = models.CharField(max_length=255, blank=True, null=True)
     occupation_risk_insurance = models.CharField(max_length=50, blank=True, null=True)  # ARL
-    pension_fund = models.CharField(max_length=50, blank=True, null=True)
-    medical_insurance = models.CharField(max_length=50, blank=True, null=True)  # EPS
+    pension_fund = models.CharField(max_length=255, blank=True, null=True)
+    medical_insurance = models.CharField(max_length=255, blank=True, null=True)  # EPS
 
     # other patient-specific fields here
 
     def __str__(self):
         return self.user.username
-
-
-
 
 
 @receiver(post_migrate)

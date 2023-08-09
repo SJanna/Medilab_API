@@ -11,6 +11,7 @@ class Accompanist(models.Model):
     phone = models.CharField(max_length=55)
     email = models.CharField(max_length=55)
     relationship = models.CharField(max_length=55)
+    
     def __str__(self):
         return self.name
 
@@ -26,8 +27,8 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(Doctor, models.DO_NOTHING)
     # ------------------------------------------------------------------------------------------------------------
     # Datos de la recepción --------------------------------------------------------------------------------------
-    department = models.CharField(max_length=55)
-    city = models.CharField(max_length=55) # City where the patient is registered.
+    department = models.CharField(max_length=255)
+    city = models.CharField(max_length=255) # City where the patient is registered.
     evaluation_type = models.CharField(max_length=55)
     company_section = models.CharField(max_length=50, blank=True, null=True)
     occupation = models.CharField(max_length=50)
