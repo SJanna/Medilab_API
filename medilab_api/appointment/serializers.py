@@ -3,6 +3,7 @@ from .models import Appointment
 
 class AppointmentSerializer(serializers.ModelSerializer):
     turn = serializers.ReadOnlyField()
+    # registered_by = serializers.ReadOnlyField()
     
     class Meta:
         model = Appointment

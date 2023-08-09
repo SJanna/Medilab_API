@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_migrate, post_save
 from django.dispatch import receiver
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 
 
@@ -16,47 +17,30 @@ class Role(models.Model):
 
 class User(AbstractUser):
     roles = models.ForeignKey(
-        Role, on_delete=models.CASCADE, blank=True, null=True)
-    identification_type = models.CharField(max_length=50,blank=True, null=True)
+        Role, on_delete=models.CASCADE)
+    identification_type = models.CharField(max_length=50)
     identification_number = models.CharField(
-        max_length=255, unique=True, blank=True, null=True)
+        max_length=255, unique=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
+    email = models.CharField(max_length=255)
     department = models.CharField(max_length=55, blank=True, null=True)
     city = models.CharField(max_length=50, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(max_length=50, blank=True, null=True)
     last_login_ip = models.GenericIPAddressField(blank=True, null=True)
+    groups, user_permissions = None, None
 
     def __str__(self):
         return self.username
 
 
-# Signal to handle adding users to the group associated with their role
-@receiver(post_save, sender=User)
-def add_user_to_group(sender, instance, **kwargs):
-    if instance.roles:
-        instance.groups.clear()  # Clear existing groups
-        instance.groups.add(instance.roles.group)  # Add to new group
-
-
-# Signal to create default roles and associated groups
-@receiver(post_migrate)
-def create_default_roles(sender, **kwargs):
-    roles = ['MyAdmin', 'Doctor', 'Patient']
-    for role_name in roles:
-        role, created = Role.objects.get_or_create(name=role_name)
-        if created:
-            group, _ = Group.objects.get_or_create(name=role_name)
-            role.group = group
-            role.save()
-
-
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     specialty = models.CharField(max_length=50,blank=True, null=True)
-    license_number = models.CharField(max_length=50,blank=True, null=True)
-
-    # other doctor-specific fields here
+    code = models.CharField(max_length=255, blank=True, null=True)
+    professional_code = models.CharField(max_length=255, blank=True, null=True)
+    resolution_number = models.CharField(max_length=255, blank=True, null=True)
+    signature = models.CharField(max_length=255,blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -65,7 +49,7 @@ class Doctor(models.Model):
 class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     medical_record_number = models.CharField(max_length=50)
-    profile_picture = models.TextField(blank=True, null=True)
+    # profile_picture = models.TextField(blank=True, null=True)
     fingerprint = models.CharField(max_length=255, blank=True, null=True)
     signature = models.CharField(max_length=255, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
@@ -90,8 +74,8 @@ class Patient(models.Model):
 
 
 
-# @receiver(post_migrate)
-# def create_default_roles(sender, **kwargs):
-#     roles = ['MyAdmin', 'Doctor', 'Patient']
-#     for role_name in roles:
-#         Role.objects.get_or_create(name=role_name)
+@receiver(post_migrate)
+def create_default_roles(sender, **kwargs):
+    roles = ['Admin', 'Doctor', 'Patient']
+    for role_name in roles:
+        Role.objects.get_or_create(name=role_name)

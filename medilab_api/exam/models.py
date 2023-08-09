@@ -11,7 +11,7 @@ class Tariff(models.Model):
     # One tariff has many exams.
 
     def __str__(self):
-        return self.name + ' - ' + self.city.name
+        return self.name + ' - ' + self.city
     
 # Lista de todos los exámenes posibles.
 class Exam(models.Model):
