@@ -7,7 +7,7 @@ class Company(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) # A company needs a user for credentials authentication.
     nit = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
-    AKA = models.CharField(max_length=255) # Also Known As, Short Name.
+    short_name = models.CharField(max_length=255) # Also Known As, Short Name.
     address = models.CharField(max_length=255)
     department = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
