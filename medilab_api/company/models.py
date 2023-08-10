@@ -15,9 +15,12 @@ class Company(models.Model):
     phone = models.CharField(max_length=255)
     observations = models.TextField(blank=True, null=True)
     economy_activity = models.CharField(max_length=255, blank=True, null=True)
+    tariff = models.ManyToManyField(Tariff, blank=True)
+    # documentos...
+    # contactos...
     # balance = models.FloatField(blank=True, null=True)
     # has_limit
-    tariff = models.ManyToManyField(Tariff, blank=True)
+    
     
     def __str__(self):
         return self.user.username
@@ -26,6 +29,7 @@ class Company(models.Model):
 class MissionCompany(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     company = models.ForeignKey(Company, models.DO_NOTHING, related_name='company', blank=True, null=True)
-    active = models.BooleanField(blank=True, null=True)
+    active = models.BooleanField()
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    tariff = models.ManyToManyField(Tariff, blank=True)

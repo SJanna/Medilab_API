@@ -1,387 +1,298 @@
-# from django.db import models
-# from medilab_api.appointment.models import Appointment
+from django.db import models
+from appointment.models import Appointment
 
-# from medilab_api.authentication.models import Patient
+from ..authentication.models import Patient, User
 
-# class MedicalRecord(models.Model):
-#     # Datos de la consulta --------------------------------------------------------------------------------------
-#     patient = models.ForeignKey(Patient, models.DO_NOTHING, blank=True, null=True)
-#     appointment = models.ForeignKey(Appointment, models.DO_NOTHING, blank=True, null=True)
-#     evaluation_type = models.ForeignKey(EvaluationTypes, models.DO_NOTHING, blank=True, null=True)
-#     # -----------------------------------------------------------------------------------------------------------
+class MedicalRecord(models.Model):
+    # Datos de la consulta --------------------------------------------------------------------------------------
+    patient = models.ForeignKey(Patient, models.DO_NOTHING, blank=True, null=True)
+    appointment = models.ForeignKey(Appointment, models.DO_NOTHING, blank=True, null=True)
+    # -----------------------------------------------------------------------------------------------------------
     
-
-#     # -----------------------------------------------------------------------------------------------------------
-#     # Hábitos (R.Sistemas) --------------------------------------------------------------------------------------
-#     smoke_type = models.ForeignKey('SmokeTypes', models.DO_NOTHING, blank=True, null=True)
-#     smoking_time = models.CharField(blank=True, null=True)
-#     cigarettes_numbers = models.IntegerField(blank=True, null=True)
-#     alcoholism_type = models.ForeignKey(AlcoholismTypes, models.DO_NOTHING, blank=True, null=True)
-#     alcoholism_frecuency_id = models.IntegerField(blank=True, null=True)
-#     psichotopics_use = models.CharField(blank=True, null=True)
-#     handly_activity = models.CharField(blank=True, null=True)
-#     sport_activity = models.CharField(blank=True, null=True)
-#     sport = models.CharField(blank=True, null=True)
-#     sport_frecuency_id = models.IntegerField(blank=True, null=True)
-#     # -----------------------------------------------------------------------------------------------------------
-#     # Vacunas (R.Sistemas) --------------------------------------------------------------------------------------
-#     vaccine_scheme = models.CharField(blank=True, null=True)
-#     # -----------------------------------------------------------------------------------------------------------
-#     # Exámen físico (E.Físico) ----------------------------------------------------------------------------------
-#     laterality = models.CharField(blank=True, null=True)
-#     height = models.IntegerField(blank=True, null=True)
-#     weight = models.IntegerField(blank=True, null=True)
-#     imc_value = models.FloatField(blank=True, null=True)
-#     imc_description = models.CharField(blank=True, null=True)
-#     ta_first = models.IntegerField(blank=True, null=True)
-#     ta_second = models.IntegerField(blank=True, null=True)
-#     fc = models.IntegerField(blank=True, null=True)
-#     fr = models.IntegerField(blank=True, null=True)
-#     temperature = models.FloatField(blank=True, null=True)
-#     pa = models.IntegerField(blank=True, null=True)
-#     general_aspect = models.CharField(blank=True, null=True)
-#     blood_type = models.CharField(blank=True, null=True)
-#     # -----------------------------------------------------------------------------------------------------------
-#     # Sistema visual (E.Físico) ---------------------------------------------------------------------------------
-#     close_vision_left_ear_first = models.IntegerField(blank=True, null=True)
-#     close_vision_left_ear_second = models.IntegerField(blank=True, null=True)
-#     close_vision_right_ear_first = models.IntegerField(blank=True, null=True)
-#     close_vision_right_ear_second = models.IntegerField(blank=True, null=True)
-#     distant_vision_left_ear_first = models.IntegerField(blank=True, null=True)
-#     distant_vision_left_ear_second = models.IntegerField(blank=True, null=True)
-#     distant_vision_right_ear_first = models.IntegerField(blank=True, null=True)
-#     distant_vision_right_ear_second = models.IntegerField(blank=True, null=True)
-#     has_lenses = models.BooleanField(blank=True, null=True)
-#     chromatic = models.ForeignKey(Chromatics, models.DO_NOTHING, blank=True, null=True)
-#     # -----------------------------------------------------------------------------------------------------------
-#     # Ginecológico (A.Patológico) ----------------------------------------------------------------------------------
-#     menarche = models.IntegerField(blank=True, null=True)
-#     cicle_period = models.IntegerField(blank=True, null=True)
-#     cicle_duration = models.IntegerField(blank=True, null=True)
-#     cytology = models.BooleanField(blank=True, null=True)
-#     cytology_result = models.CharField(blank=True, null=True)
-#     last_cytology_date = models.CharField(blank=True, null=True)
-#     fum = models.CharField(blank=True, null=True)
-#     planning = models.BooleanField(blank=True, null=True)
-#     decrease = models.BooleanField(blank=True, null=True)
-#     g_parity = models.IntegerField(blank=True, null=True)
-#     p_parity = models.IntegerField(blank=True, null=True)
-#     c_parity = models.IntegerField(blank=True, null=True)
-#     a_parity = models.IntegerField(blank=True, null=True)
-#     e_parity = models.IntegerField(blank=True, null=True)
-#     observations = models.TextField(blank=True, null=True)
-#     status = models.IntegerField(blank=True, null=True)
-#     planification_method = models.CharField(blank=True, null=True)
-#     # -----------------------------------------------------------------------------------------------------------
-#     # Otros -----------------------------------------------------------------------------------------------------
-#     attended_by = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True)
-#     general_recommendation = models.TextField(blank=True, null=True)
-#     company_recommendation = models.TextField(blank=True, null=True)
-#     has_other_medical_concepts = models.BooleanField(blank=True, null=True)
-#     # -----------------------------------------------------------------------------------------------------------
-#     class Meta:
-#         managed = False
-#         db_table = 'medical_records'
-
-# # General -------------------------------------------------------------------------------------------------------
-# # Información Ocupacional
-# class OcuppationalInfo(models.Model):
-#     # Información Ocupacional (General) -------------------------------------------------------------------------
-#     turn = models.CharField(max_length=50, blank=True, null=True) # Diurno, Nocturno, ...
-#     years_exp = models.CharField(max_length=50, blank=True, null=True)
-#     occupation_type = models.CharField(max_length=50, blank=True, null=True)
-#     occupation_description = models.CharField(max_length=250,blank=True, null=True)
-#     # EPP: Equipo de Protección Personal. --> 'Sugerir en el Front End'
-#     epp_previous_occupation = models.CharField(max_length=250,blank=True, null=True)
-#     epp_current_occupation = models.CharField(max_length=250,blank=True, null=True)
-#     epp_use_previous_occupation = models.BooleanField(blank=True, null=True)
-#     epp_use_current_occupation = models.BooleanField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+    # * General: Información Ocupacional, Antecedentes de Exposición al Riesgo. 
+    # * A. laborales: Antecedentes laborales.
+    # * A. patológicos: Antecedentes Patológicos.
+    # * R. sistemas: Antecedentes de accidentes y enfermedades laborales, Hábitos, Vacunas, Revisión por sistemas.
+    # * E. físico: Exámen físico, Sistema Visual, Revisión de las partes del cuerpo.
     
     
-# # Antecedentes de Exposición al Riesgo
-# # Tipo de Exámen de Riesgo y Nombre del Exámen
-# # Ej: Físico: Ruido; Biológico: Biológico
-# class RiskType(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
-#     type = models.CharField(max_length=250)
-#     name = models.CharField(max_length=250)
+    # -----------------------------------------------------------------------------------------------------------
+    # Otros -----------------------------------------------------------------------------------------------------
+    attended_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    general_recommendation = models.TextField(blank=True, null=True)
+    company_recommendation = models.TextField(blank=True, null=True)
+    has_other_medical_concepts = models.BooleanField(blank=True, null=True)
+    # -----------------------------------------------------------------------------------------------------------
+    class Meta:
+        managed = False
+        db_table = 'medical_records'
 
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-# # ---------------------------------------------------------------------------------------------------------------
+# General -------------------------------------------------------------------------------------------------------
+# Información Ocupacional
+class OcuppationalInfo(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    # Información Ocupacional (General) -------------------------------------------------------------------------
+    turn = models.CharField(max_length=255) # Diurno, Nocturno, ...
+    years_exp = models.CharField(max_length=255)
+    occupation_type = models.CharField(max_length=255)
+    occupation_description = models.CharField(max_length=255,blank=True, null=True)
+    # EPP: Equipo de Protección Personal. --> 'Sugerir en el Front End'
+    epp_previous_occupation = models.CharField(max_length=255,blank=True, null=True)
+    epp_current_occupation = models.CharField(max_length=255,blank=True, null=True)
+    epp_use_previous_occupation = models.BooleanField(blank=True, null=True)
+    epp_use_current_occupation = models.BooleanField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     
-# # A. laborales --------------------------------------------------------------------------------------------------
-# # Antecedentes laborales.
-# class LaborBackgrounds(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     company_name = models.CharField(max_length=250, blank=True, null=True)
-#     occupation = models.CharField(max_length=250, blank=True, null=True)
-#     years = models.IntegerField(blank=True, null=True)
-#     months = models.IntegerField(blank=True, null=True)
-#     risk_factor_one_id = models.IntegerField(blank=True, null=True)
-#     risk_factor_two_id = models.IntegerField(blank=True, null=True)
-#     risk_factor_three_id = models.IntegerField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+    
+# Antecedentes de Exposición al Riesgo
+# Tipo de Exámen de Riesgo y Nombre del Exámen
+# Ej: Físico: Ruido; Biológico: Biológico
+class RiskType(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    type = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'labor_backgrounds'
-# # ---------------------------------------------------------------------------------------------------------------
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+# ---------------------------------------------------------------------------------------------------------------
+    
+# A. laborales --------------------------------------------------------------------------------------------------
+# Antecedentes laborales.
+class LaborBackground(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    company_name = models.CharField(max_length=255, blank=True, null=True)
+    occupation = models.CharField(max_length=255, blank=True, null=True)
+    years = models.IntegerField(blank=True, null=True)
+    months = models.IntegerField(blank=True, null=True)
+    risk_factor_one_id = models.IntegerField(blank=True, null=True)
+    risk_factor_two_id = models.IntegerField(blank=True, null=True)
+    risk_factor_three_id = models.IntegerField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-# # A. patológicos ------------------------------------------------------------------------------------------------
-# # Antecedentes Patológicos.
+    class Meta:
+        managed = False
+        db_table = 'labor_backgrounds'
+# ---------------------------------------------------------------------------------------------------------------
 
-# class DeseaseType(models.Model):
-#     name = models.CharField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+# A. patológicos ------------------------------------------------------------------------------------------------
+# Antecedentes Patológicos.
 
-#     class Meta:
-#         managed = False
-#         db_table = 'desease_types'
+# Se extrajo el modelo para poder agregar nuevas enfermedades desde el Front.
+class DeseaseType(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        managed = False
+        db_table = 'desease_types'
         
         
-# class PathologicalBackgrounds(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     desease_type = models.ForeignKey(DeseaseType, models.DO_NOTHING, blank=True, null=True)
-#     personal = models.BooleanField(blank=True, null=True)
-#     familiar = models.BooleanField(blank=True, null=True)
-#     paternal = models.BooleanField(blank=True, null=True)
-#     maternal = models.BooleanField(blank=True, null=True)
-#     granpaternal = models.BooleanField(blank=True, null=True)
-#     granmaternal = models.BooleanField(blank=True, null=True)
-#     detail = models.TextField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+class PathologicalBackground(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    desease_type = models.ForeignKey(DeseaseType, models.DO_NOTHING, blank=True, null=True)
+    personal = models.BooleanField(blank=True, null=True)
+    familiar = models.BooleanField(blank=True, null=True)
+    paternal = models.BooleanField(blank=True, null=True)
+    maternal = models.BooleanField(blank=True, null=True)
+    granpaternal = models.BooleanField(blank=True, null=True)
+    granmaternal = models.BooleanField(blank=True, null=True)
+    detail = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     
 
-#     class Meta:
-#         managed = False
-#         db_table = 'pathological_backgrounds'
+    class Meta:
+        managed = False
+        db_table = 'pathological_backgrounds'
 
 
-# # ---------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------
 
-# # R. sistemas ---------------------------------------------------------------------------------------------------
-# # Antecedentes de accidentes y enfermedades laborales 
+# R. sistemas ---------------------------------------------------------------------------------------------------
+# Antecedentes de accidentes y enfermedades laborales 
 
-# class LaborInjuries(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     injury_type = models.CharField(max_length=250)
-#     description = models.CharField(blank=True, null=True)
-#     injury_date = models.DateTimeField(blank=True, null=True)
-#     insurance_reported = models.BooleanField(blank=True, null=True)
-#     aftermath = models.CharField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+class LaborInjury(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING) 
+    injury_type = models.CharField(max_length=255) # Solo dos opciones: Accidente Laboral y Enfermedad Laboral.
+    description = models.CharField(max_length=255,blank=True, null=True)
+    injury_date = models.DateTimeField(blank=True, null=True)
+    insurance_reported = models.BooleanField(blank=True, null=True)
+    aftermath = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'labor_injuries'
-
-
-# class AlcoholismTypes(models.Model):
-#     name = models.CharField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-
-#     class Meta:
-#         managed = False
-#         db_table = 'alcoholism_types'
+    class Meta:
+        managed = False
+        db_table = 'labor_injuries'
 
 
-# # Hábitos
-# class Habits(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     smoke_use = models.CharField(max_length=250)
-#     alcoholism_use = models.CharField(max_length=250)
-#     alcoholism_frecuency = models.CharField(max_length=50)
-#     psychotropics_use = models.BooleanField(blank=True, null=True)
-#     handly_activity = models.BooleanField(blank=True, null=True)
-#     sport_activity = models.BooleanField(blank=True, null=True)
-#     sport = models.CharField(max_length=250, blank=True, null=True)
-#     sport_frecuency = models.CharField(max_length=250, blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+# Hábitos
+class Habit(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    smoke_use = models.CharField(max_length=255, blank=True, null=True)
+    alcoholism_use = models.CharField(max_length=255, blank=True, null=True)
+    alcoholism_frecuency = models.CharField(max_length=255, blank=True, null=True)
+    psychotropics_use = models.BooleanField()
+    handly_activity = models.BooleanField()
+    sport_activity = models.BooleanField()
+    sport = models.CharField(max_length=255, blank=True, null=True)
+    sport_frecuency = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'habits'
+    class Meta:
+        managed = False
+        db_table = 'habits'
         
         
-# class Vaccine(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     name = models.CharField(max_length=250, blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+class Vaccine(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'vaccines'
+    class Meta:
+        managed = False
+        db_table = 'vaccines'
         
 
-# # Revisión por sistemas: 
-# # 'SymptomsType' class deleted.
-# class Symptoms(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     symptom_type = models.CharField(max_length=250, blank=True, null=True) # <-
-#     description = models.TextField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+# Revisión por sistemas: 
+# 'SymptomsType' class deleted.
+class Symptom(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    symptom_type = models.CharField(max_length=250) # Visual, auditivo, endocrino, otro, ...
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'symptoms'
-
-
-# # ---------------------------------------------------------------------------------------------------------------
+    class Meta:
+        managed = False
+        db_table = 'symptoms'
 
 
-# # E. físico -----------------------------------------------------------------------------------------------------
-# class PhysicalExam(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     laterality = models.CharField(blank=True, null=True)
-#     height = models.IntegerField(blank=True, null=True)
-#     weight = models.IntegerField(blank=True, null=True)
-#     imc_value = models.FloatField(blank=True, null=True)
-#     imc_description = models.CharField(max_length=250, blank=True, null=True)
-#     ta_first = models.IntegerField(blank=True, null=True)
-#     ta_second = models.IntegerField(blank=True, null=True)
-#     fc = models.IntegerField(blank=True, null=True)
-#     fr = models.IntegerField(blank=True, null=True)
-#     temperature = models.FloatField(blank=True, null=True)
-#     pa = models.IntegerField(blank=True, null=True)
-#     general_aspect = models.CharField(max_length=250, blank=True, null=True)
-    
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-    
-# # Normal/Anormal
-# class Chromatics(models.Model):
-#     name = models.CharField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+# ---------------------------------------------------------------------------------------------------------------
 
-#     class Meta:
-#         managed = False
-#         db_table = 'chromatics'
+
+# E. físico -----------------------------------------------------------------------------------------------------
+class PhysicalExam(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    laterality = models.CharField(max_length=255) # Diestro, Zurdo, Ambidiestro.
+    height = models.IntegerField(blank=True, null=True)
+    weight = models.IntegerField(blank=True, null=True)
+    imc_value = models.FloatField(blank=True, null=True)
+    imc_description = models.CharField(max_length=255, blank=True, null=True)
+    fc = models.IntegerField(blank=True, null=True)
+    fr = models.IntegerField(blank=True, null=True)
+    temperature = models.FloatField(blank=True, null=True)
+    pa = models.IntegerField(blank=True, null=True)
+    ta_first = models.IntegerField(blank=True, null=True) #ta = tensión arterial
+    ta_second = models.IntegerField(blank=True, null=True)
+    general_aspect = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
         
 
-# class VisualSystem(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     close_vision_left_ear_first = models.IntegerField(blank=True, null=True)
-#     close_vision_left_ear_second = models.IntegerField(blank=True, null=True)
-#     close_vision_right_ear_first = models.IntegerField(blank=True, null=True)
-#     close_vision_right_ear_second = models.IntegerField(blank=True, null=True)
-#     distant_vision_left_ear_first = models.IntegerField(blank=True, null=True)
-#     distant_vision_left_ear_second = models.IntegerField(blank=True, null=True)
-#     distant_vision_right_ear_first = models.IntegerField(blank=True, null=True)
-#     distant_vision_right_ear_second = models.IntegerField(blank=True, null=True)
-#     has_lenses = models.BooleanField(blank=True, null=True)
-#     chromatic = models.ForeignKey(Chromatics, models.DO_NOTHING, blank=True, null=True)
+class VisualSystem(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    close_vision_left_ear_first = models.IntegerField(blank=True, null=True)
+    close_vision_left_ear_second = models.IntegerField(blank=True, null=True)
+    close_vision_right_ear_first = models.IntegerField(blank=True, null=True)
+    close_vision_right_ear_second = models.IntegerField(blank=True, null=True)
+    distant_vision_left_ear_first = models.IntegerField(blank=True, null=True)
+    distant_vision_left_ear_second = models.IntegerField(blank=True, null=True)
+    distant_vision_right_ear_first = models.IntegerField(blank=True, null=True)
+    distant_vision_right_ear_second = models.IntegerField(blank=True, null=True)
+    has_lenses = models.BooleanField()
+    chromatic = models.CharField(max_length=255) # 2 opciones: Normal, Anormal.
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     
 
-# # Maybe Deleted later......
-# class BodyParts(models.Model):
-#     name = models.CharField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-#     order = models.IntegerField(blank=True, null=True)
+# Para poderse crear desde el front.
+class BodyPart(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'body_parts'
-
-
-# # Maybe Deleted later......
-# class BodySubparts(models.Model):
-#     body_part = models.ForeignKey(BodyParts, models.DO_NOTHING, blank=True, null=True)
-#     name = models.CharField(max_length=250, blank=True, null=True)
-#     left = models.CharField(max_length=250, blank=True, null=True)
-#     right = models.CharField(max_length=250, blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-
-#     class Meta:
-#         managed = False
-#         db_table = 'body_subparts'
+    class Meta:
+        managed = False
+        db_table = 'body_parts'
 
 
-# # Revisión de las partes del cuerpo.
-# class MedicalRecordBodyParts(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     body_part = models.ForeignKey(BodyParts, models.DO_NOTHING, blank=True, null=True) # <- Possible CharField.
-#     is_anormal = models.BooleanField(blank=True, null=True)
-#     detail = models.TextField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+# Revisión de las partes del cuerpo.
+class MedicalRecordBodyParts(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    body_part = models.ForeignKey(BodyPart, models.DO_NOTHING, blank=True, null=True) # <- Possible CharField.
+    is_anormal = models.BooleanField()
+    detail = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'medical_record_body_parts'
-# # ---------------------------------------------------------------------------------------------------------------
+    class Meta:
+        managed = False
+        db_table = 'medical_record_body_parts'
+# ---------------------------------------------------------------------------------------------------------------
 
 
-# # Diagnóstico ---------------------------------------------------------------------------------------------------
-# # CIE10 - Clasificación Internacional de Enfermades -> JSON List.
-# class Diagnostic(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     diagnostic_type = models.CharField(max_length=250, blank=True, null=True)
-#     cie_code = models.CharField(max_length=500, blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+# Diagnóstico ---------------------------------------------------------------------------------------------------
+# CIE10 - Clasificación Internacional de Enfermades -> JSON List.
+class Diagnostic(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    diagnostic_type = models.CharField(max_length=255, blank=True, null=True)
+    cie_code = models.CharField(max_length=500, blank=True, null=True) # Código CIE10. JSON list of codes from Front end.
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'diagnostics'
+    class Meta:
+        managed = False
+        db_table = 'diagnostics'
     
 
-# class MedicalRecordRecommendation(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     type = models.CharField(max_length=250)
-#     name = models.CharField(max_length=500)
-#     general_recommendation = models.CharField(blank=True, null=True) # Recomendación General.
-#     company_recommendation = models.CharField(blank=True, null=True) # Recomendación Company.
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
+class MedicalRecordRecommendation(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    type = models.CharField(max_length=250)
+    name = models.TextField()
+    general_recommendation = models.CharField(blank=True, null=True) # Recomendación General.
+    company_recommendation = models.CharField(blank=True, null=True) # Recomendación Company.
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'medical_record_recommendations'
+    class Meta:
+        managed = False
+        db_table = 'medical_record_recommendations'
         
 
-# # Concepto Médico.
-# class MedicalConcept(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     name = models.CharField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-#     kind = models.CharField(max_length=250, blank=True, null=True) # option list.
-#     observations = models.TextField(blank=True, null=True) # option list.
+# Concepto Médico. SHALEM.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+class MedicalConcept(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    name = models.CharField(max_length=255) #opciones: Sin restricciones para el cargo, Con restricciones para el cargo, Aplazado, No apto, Satisfactorio, No satisfactorio
+    kind = models.CharField(max_length=255) # option list. !!!!!!!!!!!!!!1
+    observations = models.TextField(blank=True, null=True) # option list.
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'medical_concepts'
+    class Meta:
+        managed = False
+        db_table = 'medical_concepts'
 
 
-# # Resultados de exámenes
-# class ExamResult(models.Model):
-#     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING, blank=True, null=True)
-#     name = models.CharField(blank=True, null=True)
-#     unit = models.CharField(blank=True, null=True)
-#     order = models.IntegerField(blank=True, null=True)
-#     reference_value = models.CharField(blank=True, null=True)
-#     created_at = models.DateTimeField()
-#     updated_at = models.DateTimeField()
-#     is_responsable = models.CharField(max_length=250, blank=True, null=True)
+# Resultados de exámenes
+class ExamResult(models.Model):
+    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    name = models.CharField(max_length=255)
+    unit = models.CharField(blank=True, null=True)
+    reference_value = models.TextField(blank=True, null=True)
+    is_responsable = models.ForeignKey(User, models.DO_NOTHING)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'exam_items'
-# # ---------------------------------------------------------------------------------------------------------------
+    class Meta:
+        managed = False
+        db_table = 'exam_items'
+# ---------------------------------------------------------------------------------------------------------------
 
 # class Optometry(models.Model):
 #     # Datos de la consulta --------------------------------------------------------------------------------------
