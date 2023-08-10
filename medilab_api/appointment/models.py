@@ -65,15 +65,6 @@ class Appointment(models.Model):
         except Appointment.DoesNotExist:
             self.turn = 1
         super(Appointment, self).save(*args, **kwargs)
-
-
-# Medical Record correspond to the information of one Appointment.
-class MedicalRecord(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='patient')
-    appointment = models.ForeignKey(Appointment, models.DO_NOTHING, blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-    
     
     
     

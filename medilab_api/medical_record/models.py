@@ -1,36 +1,31 @@
 from django.db import models
 from appointment.models import Appointment
-
-from ..authentication.models import Patient, User
+from authentication.models import Patient, User
 
 class MedicalRecord(models.Model):
     # Datos de la consulta --------------------------------------------------------------------------------------
-    patient = models.ForeignKey(Patient, models.DO_NOTHING, blank=True, null=True)
+    # patient = models.ForeignKey(Patient, models.DO_NOTHING, blank=True, null=True)
     appointment = models.ForeignKey(Appointment, models.DO_NOTHING, blank=True, null=True)
     # -----------------------------------------------------------------------------------------------------------
-    
     # * General: Información Ocupacional, Antecedentes de Exposición al Riesgo. 
     # * A. laborales: Antecedentes laborales.
     # * A. patológicos: Antecedentes Patológicos.
     # * R. sistemas: Antecedentes de accidentes y enfermedades laborales, Hábitos, Vacunas, Revisión por sistemas.
     # * E. físico: Exámen físico, Sistema Visual, Revisión de las partes del cuerpo.
-    
-    
     # -----------------------------------------------------------------------------------------------------------
     # Otros -----------------------------------------------------------------------------------------------------
     attended_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
-    general_recommendation = models.TextField(blank=True, null=True)
-    company_recommendation = models.TextField(blank=True, null=True)
+    # general_recommendation = models.TextField(blank=True, null=True)
+    # company_recommendation = models.TextField(blank=True, null=True)
     has_other_medical_concepts = models.BooleanField(blank=True, null=True)
     # -----------------------------------------------------------------------------------------------------------
-    class Meta:
-        managed = False
-        db_table = 'medical_records'
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
 # General -------------------------------------------------------------------------------------------------------
 # Información Ocupacional
 class OcuppationalInfo(models.Model):
-    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    medical_record = models.OneToOneField(MedicalRecord, models.DO_NOTHING)
     # Información Ocupacional (General) -------------------------------------------------------------------------
     turn = models.CharField(max_length=255) # Diurno, Nocturno, ...
     years_exp = models.CharField(max_length=255)
@@ -71,9 +66,6 @@ class LaborBackground(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'labor_backgrounds'
 # ---------------------------------------------------------------------------------------------------------------
 
 # A. patológicos ------------------------------------------------------------------------------------------------
@@ -85,10 +77,6 @@ class DeseaseType(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'desease_types'
-        
         
 class PathologicalBackground(models.Model):
     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
@@ -103,10 +91,6 @@ class PathologicalBackground(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     
-
-    class Meta:
-        managed = False
-        db_table = 'pathological_backgrounds'
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -124,14 +108,11 @@ class LaborInjury(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'labor_injuries'
 
 
 # Hábitos
 class Habit(models.Model):
-    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    medical_record = models.OneToOneField(MedicalRecord, models.DO_NOTHING)
     smoke_use = models.CharField(max_length=255, blank=True, null=True)
     alcoholism_use = models.CharField(max_length=255, blank=True, null=True)
     alcoholism_frecuency = models.CharField(max_length=255, blank=True, null=True)
@@ -143,10 +124,7 @@ class Habit(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'habits'
-        
+
         
 class Vaccine(models.Model):
     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
@@ -154,10 +132,6 @@ class Vaccine(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'vaccines'
-        
 
 # Revisión por sistemas: 
 # 'SymptomsType' class deleted.
@@ -168,17 +142,13 @@ class Symptom(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'symptoms'
-
 
 # ---------------------------------------------------------------------------------------------------------------
 
 
 # E. físico -----------------------------------------------------------------------------------------------------
 class PhysicalExam(models.Model):
-    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    medical_record = models.OneToOneField(MedicalRecord, models.DO_NOTHING)
     laterality = models.CharField(max_length=255) # Diestro, Zurdo, Ambidiestro.
     height = models.IntegerField(blank=True, null=True)
     weight = models.IntegerField(blank=True, null=True)
@@ -196,7 +166,7 @@ class PhysicalExam(models.Model):
         
 
 class VisualSystem(models.Model):
-    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    medical_record = models.OneToOneField(MedicalRecord, models.DO_NOTHING)
     close_vision_left_ear_first = models.IntegerField(blank=True, null=True)
     close_vision_left_ear_second = models.IntegerField(blank=True, null=True)
     close_vision_right_ear_first = models.IntegerField(blank=True, null=True)
@@ -217,13 +187,9 @@ class BodyPart(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'body_parts'
-
 
 # Revisión de las partes del cuerpo.
-class MedicalRecordBodyParts(models.Model):
+class MedicalRecordBodyPart(models.Model):
     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
     body_part = models.ForeignKey(BodyPart, models.DO_NOTHING, blank=True, null=True) # <- Possible CharField.
     is_anormal = models.BooleanField()
@@ -231,67 +197,53 @@ class MedicalRecordBodyParts(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'medical_record_body_parts'
+
 # ---------------------------------------------------------------------------------------------------------------
 
 
 # Diagnóstico ---------------------------------------------------------------------------------------------------
 # CIE10 - Clasificación Internacional de Enfermades -> JSON List.
 class Diagnostic(models.Model):
-    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    medical_record = models.OneToOneField(MedicalRecord, models.DO_NOTHING)
     diagnostic_type = models.CharField(max_length=255, blank=True, null=True)
     cie_code = models.CharField(max_length=500, blank=True, null=True) # Código CIE10. JSON list of codes from Front end.
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'diagnostics'
     
 
 class MedicalRecordRecommendation(models.Model):
     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
     type = models.CharField(max_length=250)
     name = models.TextField()
-    general_recommendation = models.CharField(blank=True, null=True) # Recomendación General.
-    company_recommendation = models.CharField(blank=True, null=True) # Recomendación Company.
+    general_recommendation = models.TextField(blank=True, null=True) # Recomendación General.
+    company_recommendation = models.TextField(blank=True, null=True) # Recomendación Company.
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'medical_record_recommendations'
         
 
-# Concepto Médico. SHALEM.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+# Concepto Médico.
 class MedicalConcept(models.Model):
-    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    medical_record = models.OneToOneField(MedicalRecord, models.DO_NOTHING)
     name = models.CharField(max_length=255) #opciones: Sin restricciones para el cargo, Con restricciones para el cargo, Aplazado, No apto, Satisfactorio, No satisfactorio
-    kind = models.CharField(max_length=255) # option list. !!!!!!!!!!!!!!1
+    kind = models.CharField(max_length=255) #opciones: Apto, No apto, Aplazado
     observations = models.TextField(blank=True, null=True) # option list.
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'medical_concepts'
 
 
 # Resultados de exámenes
 class ExamResult(models.Model):
-    medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
+    medical_record = models.OneToOneField(MedicalRecord, models.DO_NOTHING)
     name = models.CharField(max_length=255)
-    unit = models.CharField(blank=True, null=True)
+    unit = models.CharField(max_length=255, blank=True, null=True)
     reference_value = models.TextField(blank=True, null=True)
     is_responsable = models.ForeignKey(User, models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'exam_items'
 # ---------------------------------------------------------------------------------------------------------------
 
 # class Optometry(models.Model):
