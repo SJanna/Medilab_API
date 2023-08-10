@@ -5,7 +5,7 @@ from authentication.models import Patient, User
 class MedicalRecord(models.Model):
     # Datos de la consulta --------------------------------------------------------------------------------------
     # patient = models.ForeignKey(Patient, models.DO_NOTHING, blank=True, null=True)
-    appointment = models.ForeignKey(Appointment, models.DO_NOTHING, blank=True, null=True)
+    appointment = models.OneToOneField(Appointment, models.DO_NOTHING, blank=True, null=True) #OnetoOne?
     # -----------------------------------------------------------------------------------------------------------
     # * General: Información Ocupacional, Antecedentes de Exposición al Riesgo. 
     # * A. laborales: Antecedentes laborales.
