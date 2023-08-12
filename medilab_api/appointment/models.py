@@ -70,7 +70,3 @@ class Emphasis(models.Model):
     Appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    
-    
-    
-    
