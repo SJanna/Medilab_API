@@ -14,6 +14,14 @@ class Accompanist(models.Model):
     
     def __str__(self):
         return self.name
+    
+    
+class Emphasis(models.Model):
+    name = models.CharField(max_length=255)
+    Appointment = models.ForeignKey(Appointment, models.DO_NOTHING)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    
 
 class Appointment(models.Model):
     turn = models.IntegerField()
@@ -37,9 +45,6 @@ class Appointment(models.Model):
     package = models.ForeignKey(Package, models.DO_NOTHING, blank=True, null=True)
     # Acompañante -----------------------------------------------------------------------------------------------
     accompanist = models.ForeignKey(Accompanist, on_delete=models.DO_NOTHING, blank=True, null=True)
-    # ------------------------------------------------------------------------------------------------------------
-    # Otros conceptos médicos ------------------------------------------------------------------------------------
-    emphasis = models.CharField(max_length=50, blank=True, null=True)
     # ------------------------------------------------------------------------------------------------------------
     total_amount = models.FloatField()
     status = models.IntegerField(blank=True, null=True)

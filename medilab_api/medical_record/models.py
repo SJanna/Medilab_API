@@ -13,6 +13,9 @@ class MedicalRecord(models.Model):
     # * R. sistemas: Antecedentes de accidentes y enfermedades laborales, Hábitos, Vacunas, Revisión por sistemas.
     # * E. físico: Exámen físico, Sistema Visual, Revisión de las partes del cuerpo.
     # -----------------------------------------------------------------------------------------------------------
+    # Concepto Médico (Diagnóstico). ----------------------------------------------------------------------------
+    
+    # -----------------------------------------------------------------------------------------------------------
     # Otros -----------------------------------------------------------------------------------------------------
     attended_by = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     # general_recommendation = models.TextField(blank=True, null=True)
@@ -210,28 +213,46 @@ class Diagnostic(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    
 
 class MedicalRecordRecommendation(models.Model):
     medical_record = models.ForeignKey(MedicalRecord, models.DO_NOTHING)
-    type = models.CharField(max_length=250)
+    type = models.CharField(max_length=255)
     name = models.TextField()
     general_recommendation = models.TextField(blank=True, null=True) # Recomendación General.
     company_recommendation = models.TextField(blank=True, null=True) # Recomendación Company.
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+  
 
-        
-
-# Concepto Médico.
+# Concepto Médico Básico: Al no seleccionar ningún Emphasis. ----------------------------------------------------
 class MedicalConcept(models.Model):
     medical_record = models.OneToOneField(MedicalRecord, models.DO_NOTHING)
     name = models.CharField(max_length=255) #opciones: Sin restricciones para el cargo, Con restricciones para el cargo, Aplazado, No apto, Satisfactorio, No satisfactorio
-    kind = models.CharField(max_length=255) #opciones: Apto, No apto, Aplazado
-    observations = models.TextField(blank=True, null=True) # option list.
+    description = models.TextField(blank=True, null=True) # option list.
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    
+    
+class HasRestrictions(models.Model):
+    medical_concept = models.OneToOneField(MedicalConcept)
+    restriction_time = models.TextField(blank=True, null=True)
+    restriction_detail = models.TextField(blank=True, null=True)
+    
 
+class Postponed(models.Model):
+    medical_concept = models.OneToOneField(MedicalConcept)
+    max_postponed_date= models.DateField(blank=True, null=True)
+    requirements_to_lift_postponed = models.TextField(blank=True, null=True)
+# ----------------------------------------------------------------------------------------------------------------    
+    
+# Concepto Médico según Emphasis.
+# Trabajo en Alturas: Apto, No apto.
+# ....
+class EmphasisInMedicalConcept(models.Model):
+    name = models.CharField(max_length=255) # options:apto, no apto.
+    medical_concept = models.ForeignKey(MedicalConcept, models.DO_NOTHING)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
 
 # Resultados de exámenes
