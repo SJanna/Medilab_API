@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics
 from .models import User, Role, Patient, Doctor, Group
-from .serializers import UserSerializer, RoleSerializer, PatientSerializer, DoctorSerializer
+from .serializers import UserSerializer, RoleSerializer, PatientSerializer, DoctorSerializer, RevalidateUserSerializer
 # Login imports. ------------------------------------------------ #
 from dj_rest_auth.views import LoginView as DefaultLoginView
 from django.http import JsonResponse
@@ -38,7 +38,7 @@ class LoginView(DefaultLoginView):
     
 # create simple view to revalidate the user data in the frontend
 class RevalidateUserView(generics.RetrieveAPIView):
-    serializer_class = UserSerializer
+    serializer_class = RevalidateUserSerializer
     permission_classes = [IsAuthenticated]
     
     def get(self, request, *args, **kwargs):

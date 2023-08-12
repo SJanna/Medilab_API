@@ -15,13 +15,6 @@ class Accompanist(models.Model):
     def __str__(self):
         return self.name
     
-    
-class Emphasis(models.Model):
-    name = models.CharField(max_length=255)
-    Appointment = models.ForeignKey(Appointment, models.DO_NOTHING)
-    created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-    
 
 class Appointment(models.Model):
     turn = models.IntegerField()
@@ -37,9 +30,9 @@ class Appointment(models.Model):
     # Datos de la recepción --------------------------------------------------------------------------------------
     department = models.CharField(max_length=255)
     city = models.CharField(max_length=255) # City where the patient is registered.
-    evaluation_type = models.CharField(max_length=55)
-    company_section = models.CharField(max_length=50, blank=True, null=True)
-    occupation = models.CharField(max_length=50)
+    evaluation_type = models.CharField(max_length=255)
+    company_section = models.CharField(max_length=255, blank=True, null=True)
+    occupation = models.CharField(max_length=255)
     payment_type = models.CharField(max_length=50, blank=True, null=True)
     comment = models.TextField(blank=True, null=True)  # Observations
     package = models.ForeignKey(Package, models.DO_NOTHING, blank=True, null=True)
@@ -70,6 +63,14 @@ class Appointment(models.Model):
         except Appointment.DoesNotExist:
             self.turn = 1
         super(Appointment, self).save(*args, **kwargs)
+        
+
+class Emphasis(models.Model):
+    name = models.CharField(max_length=255)
+    Appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    
     
     
     

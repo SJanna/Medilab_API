@@ -226,7 +226,7 @@ class MedicalRecordRecommendation(models.Model):
 
 # Concepto Médico Básico: Al no seleccionar ningún Emphasis. ----------------------------------------------------
 class MedicalConcept(models.Model):
-    medical_record = models.OneToOneField(MedicalRecord, models.DO_NOTHING)
+    medical_record = models.OneToOneField(MedicalRecord, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=255) #opciones: Sin restricciones para el cargo, Con restricciones para el cargo, Aplazado, No apto, Satisfactorio, No satisfactorio
     description = models.TextField(blank=True, null=True) # option list.
     created_at = models.DateTimeField(auto_now=True)
@@ -234,13 +234,13 @@ class MedicalConcept(models.Model):
     
     
 class HasRestrictions(models.Model):
-    medical_concept = models.OneToOneField(MedicalConcept)
+    medical_concept = models.OneToOneField(MedicalConcept, on_delete=models.DO_NOTHING)
     restriction_time = models.TextField(blank=True, null=True)
     restriction_detail = models.TextField(blank=True, null=True)
     
 
 class Postponed(models.Model):
-    medical_concept = models.OneToOneField(MedicalConcept)
+    medical_concept = models.OneToOneField(MedicalConcept, on_delete=models.DO_NOTHING)
     max_postponed_date= models.DateField(blank=True, null=True)
     requirements_to_lift_postponed = models.TextField(blank=True, null=True)
 # ----------------------------------------------------------------------------------------------------------------    

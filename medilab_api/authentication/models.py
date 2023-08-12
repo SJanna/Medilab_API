@@ -14,13 +14,14 @@ class Role(models.Model):
 
 
 class User(AbstractUser):
-    roles = models.ForeignKey(
+    role = models.ForeignKey(
         Role, on_delete=models.CASCADE, blank=True, null=True)
     identification_type = models.CharField(max_length=50)
     identification_number = models.CharField(
         max_length=255, unique=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
     email = models.CharField(max_length=255)
+    date_of_birth = models.DateField()
     department = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
@@ -46,11 +47,9 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    medical_record_number = models.CharField(max_length=255)
-    # profile_picture = models.TextField(blank=True, null=True)
+    profile_picture = models.TextField(blank=True, null=True)
     fingerprint = models.CharField(max_length=255, blank=True, null=True)
     signature = models.CharField(max_length=255, blank=True, null=True)
-    date_of_birth = models.DateField()
     place_of_birth = models.CharField(max_length=255, blank=True, null=True)
     dependant = models.CharField(max_length=255, blank=True, null=True) # Num. de personas a cargo.
     schooling = models.CharField(max_length=255,blank=True, null=True)
@@ -58,7 +57,6 @@ class Patient(models.Model):
     stratum = models.CharField(max_length=50,blank=True, null=True)
     marital_status = models.CharField(max_length=255,blank=True, null=True)
     blood_type = models.CharField(max_length=255, blank=True, null=True)
-    photo = models.CharField(max_length=255, blank=True, null=True)
     occupation_risk_insurance = models.CharField(max_length=50, blank=True, null=True)  # ARL
     pension_fund = models.CharField(max_length=255, blank=True, null=True)
     medical_insurance = models.CharField(max_length=255, blank=True, null=True)  # EPS
