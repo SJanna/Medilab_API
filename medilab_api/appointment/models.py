@@ -28,11 +28,8 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(Doctor, models.DO_NOTHING)
     # ------------------------------------------------------------------------------------------------------------
     # Datos de la recepción --------------------------------------------------------------------------------------
-    department = models.CharField(max_length=255)
     city = models.CharField(max_length=255) # City where the patient is registered.
     evaluation_type = models.CharField(max_length=255)
-    company_section = models.CharField(max_length=255, blank=True, null=True)
-    occupation = models.CharField(max_length=255)
     payment_type = models.CharField(max_length=50, blank=True, null=True)
     comment = models.TextField(blank=True, null=True)  # Observations
     package = models.ForeignKey(Package, models.DO_NOTHING, blank=True, null=True)

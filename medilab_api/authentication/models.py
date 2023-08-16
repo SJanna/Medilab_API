@@ -60,7 +60,9 @@ class Patient(models.Model):
     occupation_risk_insurance = models.CharField(max_length=50, blank=True, null=True)  # ARL
     pension_fund = models.CharField(max_length=255, blank=True, null=True)
     medical_insurance = models.CharField(max_length=255, blank=True, null=True)  # EPS
-
+    section = models.CharField(max_length=255, blank=True, null=True) # Cargo que ocupa el paciente dentro de su ocupación.
+    occupation = models.CharField(max_length=255, blank=True, null=True)
+    
     # other patient-specific fields here
 
     def __str__(self):
