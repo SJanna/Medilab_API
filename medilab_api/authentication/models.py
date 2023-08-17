@@ -71,6 +71,6 @@ class Patient(models.Model):
 
 @receiver(post_migrate)
 def create_default_roles(sender, **kwargs):
-    roles = ['Admin', 'Doctor', 'Patient']
+    roles = ['Admin', 'Doctor', 'Patient', 'Company']
     for role_name in roles:
         Role.objects.get_or_create(name=role_name)

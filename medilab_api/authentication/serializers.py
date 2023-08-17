@@ -3,7 +3,6 @@ from .models import User, Role, Doctor, Patient
 from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
-    role = serializers.StringRelatedField()
 
     class Meta:
         model = User
@@ -41,6 +40,13 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = '__all__'
+        
+
+class DoctorNameSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['first_name','last_name']
         
         
 

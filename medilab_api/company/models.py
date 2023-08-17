@@ -15,7 +15,7 @@ class Company(models.Model):
     phone = models.CharField(max_length=255)
     observations = models.TextField(blank=True, null=True)
     economy_activity = models.CharField(max_length=255, blank=True, null=True)
-    tariff = models.ManyToManyField(Tariff, blank=True)
+    tariff = models.ManyToManyField(Tariff, blank=True, related_name='tariff')
     # documentos...
     # contactos...
     # balance = models.FloatField(blank=True, null=True)
