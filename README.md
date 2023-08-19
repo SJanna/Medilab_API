@@ -8,6 +8,8 @@
 - [﻿Django Rest Framework](https://www.django-rest-framework.org/) 
 ## athentication:
 ### Comentarios:
+RUN JSON DATA: python manage.py loaddata fake_data_generator.json
+
 - Añadir filtros, pagination y ordenamiento a los endpoints.
 - BaseUser
 - Doctor

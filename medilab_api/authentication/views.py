@@ -1,5 +1,5 @@
 from rest_framework import viewsets, generics
-from .models import User, Role, Patient, Doctor, Group
+from .models import User, Role, Patient, Doctor
 from .serializers import DoctorNameSerializer, UserSerializer, RoleSerializer, PatientSerializer, DoctorSerializer, RevalidateUserSerializer
 # Login imports. ------------------------------------------------ #
 from dj_rest_auth.views import LoginView as DefaultLoginView

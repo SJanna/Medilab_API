@@ -1,13 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models.signals import post_migrate, post_save
+from django.db.models.signals import post_migrate
 from django.dispatch import receiver
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
 
 
 class Role(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    CHOICES = [('1', 'ADMIN'), ('2', 'DOCTOR'), ('3', 'PATIENT'), ('4', 'COMPANY')]
+    name = models.CharField(max_length=50, unique=True, choices=CHOICES)
     
     def __str__(self):
         return self.name
@@ -69,8 +68,8 @@ class Patient(models.Model):
         return self.user.username
 
 
-@receiver(post_migrate)
-def create_default_roles(sender, **kwargs):
-    roles = ['Admin', 'Doctor', 'Patient', 'Company']
-    for role_name in roles:
-        Role.objects.get_or_create(name=role_name)
+# @receiver(post_migrate)
+# def create_default_roles(sender, **kwargs):
+#     roles = ['Admin', 'Doctor', 'Patient', 'Company']
+#     for role_name in roles:
+#         Role.objects.get_or_create(name=role_name)

@@ -1,0 +1,967 @@
+[
+  {
+    "model": "authentication.role",
+    "pk": 1,
+    "fields": {
+      "name": "Admin"
+    }
+  },
+  {
+    "model": "authentication.role",
+    "pk": 2,
+    "fields": {
+      "name": "Doctor"
+    }
+  },
+  {
+    "model": "authentication.role",
+    "pk": 3,
+    "fields": {
+      "name": "Patient"
+    }
+  },
+  {
+    "model": "authentication.role",
+    "pk": 4,
+    "fields": {
+      "name": "Company"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 100,
+    "fields": {
+      "username": "admin03",
+      "role": 1,
+      "identification_type": "DNI",
+      "identification_number": "12345678",
+      "email": "admin@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 1001232,
+    "fields": {
+      "username": "shalem",
+      "role": 1,
+      "identification_type": "CC",
+      "identification_number": "1003261726",
+      "email": "sjanna@example.com",
+      "password":"uninorte1"
+
+    }
+  },
+  {
+    "model": "authentication.doctor",
+    "pk": 100,
+    "fields": {
+      "user": 100,
+      "specialty": "Cardiology",
+      "code": "DOC123",
+      "professional_code": "PRO567",
+      "resolution_number": "RES890",
+      "signature": "base64_encoded_signature"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 101,
+    "fields": {
+      "username": "patient123",
+      "role": 3,
+      "identification_type": "Passport",
+      "identification_number": "P123456",
+      "email": "patient@example.com"
+    }
+  },
+  {
+    "model": "authentication.patient",
+    "pk": 100,
+    "fields": {
+      "user": 101,
+      "profile_picture": "base64_encoded_picture",
+      "fingerprint": "fingerprint_data",
+      "signature": "base64_encoded_signature",
+      "place_of_birth": "CityX",
+      "dependant": "2",
+      "schooling": "University",
+      "zone": "Urban",
+      "stratum": "3",
+      "marital_status": "Single",
+      "blood_type": "A+",
+      "occupation_risk_insurance": "ARL123",
+      "pension_fund": "PensionX",
+      "medical_insurance": "EPS456",
+      "section": "Manager",
+      "occupation": "Engineer"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 102,
+    "fields": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "username": "user1",
+      "role": 2,
+      "identification_type": "DNI",
+      "identification_number": "11111111",
+      "email": "user1@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 103,
+    "fields": {
+      "username": "user2",
+      "role": 3,
+      "identification_type": "Passport",
+      "identification_number": "22222222",
+      "email": "user2@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 104,
+    "fields": {
+      "username": "user3",
+      "role": 3,
+      "identification_type": "ID",
+      "identification_number": "33333333",
+      "email": "user3@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 105,
+    "fields": {
+      "username": "user4",
+      "role": 2,
+      "identification_type": "DNI",
+      "identification_number": "44444444",
+      "email": "user4@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 106,
+    "fields": {
+      "username": "user5",
+      "role": 3,
+      "identification_type": "Passport",
+      "identification_number": "55555555",
+      "email": "user5@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 107,
+    "fields": {
+      "username": "user6",
+      "role": 3,
+      "identification_type": "ID",
+      "identification_number": "66666666",
+      "email": "user6@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 108,
+    "fields": {
+      "username": "user7",
+      "role": 2,
+      "identification_type": "DNI",
+      "identification_number": "77777777",
+      "email": "user7@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 109,
+    "fields": {
+      "username": "user8",
+      "role": 3,
+      "identification_type": "Passport",
+      "identification_number": "88888888",
+      "email": "user8@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 110,
+    "fields": {
+      "username": "user9",
+      "role": 3,
+      "identification_type": "ID",
+      "identification_number": "99999999",
+      "email": "user9@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 111,
+    "fields": {
+      "username": "doctor1",
+      "role": 2,
+      "identification_type": "DNI",
+      "identification_number": "12345671",
+      "email": "doctor1@example.com"
+    }
+  },
+  {
+    "model": "authentication.doctor",
+    "pk": 101,
+    "fields": {
+      "user": 111,
+      "specialty": "Pediatrics",
+      "code": "DOC124",
+      "professional_code": "PRO568",
+      "resolution_number": "RES891",
+      "signature": "base64_encoded_signature"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 112,
+    "fields": {
+      "username": "doctor2",
+      "role": 2,
+      "identification_type": "DNI",
+      "identification_number": "12345672",
+      "email": "doctor2@example.com"
+    }
+  },
+  {
+    "model": "authentication.doctor",
+    "pk": 102,
+    "fields": {
+      "user": 112,
+      "specialty": "Orthopedics",
+      "code": "DOC125",
+      "professional_code": "PRO569",
+      "resolution_number": "RES892",
+      "signature": "base64_encoded_signature"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 113,
+    "fields": {
+      "username": "doctor3",
+      "role": 2,
+      "identification_type": "DNI",
+      "identification_number": "12345673",
+      "email": "doctor3@example.com"
+    }
+  },
+  {
+    "model": "authentication.doctor",
+    "pk": 103,
+    "fields": {
+      "user": 113,
+      "specialty": "Dermatology",
+      "code": "DOC126",
+      "professional_code": "PRO570",
+      "resolution_number": "RES893",
+      "signature": "base64_encoded_signature"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 114,
+    "fields": {
+      "username": "doctor4",
+      "role": 2,
+      "identification_type": "DNI",
+      "identification_number": "12345674",
+      "email": "doctor4@example.com"
+    }
+  },
+  {
+    "model": "authentication.doctor",
+    "pk": 104,
+    "fields": {
+      "user": 114,
+      "specialty": "Neurology",
+      "code": "DOC127",
+      "professional_code": "PRO571",
+      "resolution_number": "RES894",
+      "signature": "base64_encoded_signature"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 115,
+    "fields": {
+      "username": "doctor5",
+      "role": 2,
+      "identification_type": "DNI",
+      "identification_number": "12345675",
+      "email": "doctor5@example.com"
+    }
+  },
+  {
+    "model": "authentication.doctor",
+    "pk": 105,
+    "fields": {
+      "user": 115,
+      "specialty": "Ophthalmology",
+      "code": "DOC128",
+      "professional_code": "PRO572",
+      "resolution_number": "RES895",
+      "signature": "base64_encoded_signature"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 116,
+    "fields": {
+      "username": "patient10",
+      "role": 3,
+      "identification_type": "Passport",
+      "identification_number": "11111110",
+      "email": "patient10@example.com"
+    }
+  },
+  {
+    "model": "authentication.patient",
+    "pk": 101,
+    "fields": {
+      "user": 116,
+      "profile_picture": "base64_encoded_picture",
+      "fingerprint": "fingerprint_data",
+      "signature": "base64_encoded_signature",
+      "place_of_birth": "CityY",
+      "dependant": "3",
+      "schooling": "High School",
+      "zone": "Suburban",
+      "stratum": "2",
+      "marital_status": "Married",
+      "blood_type": "B-",
+      "occupation_risk_insurance": "ARL124",
+      "pension_fund": "PensionY",
+      "medical_insurance": "EPS457",
+      "section": "Supervisor",
+      "occupation": "Teacher"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 117,
+    "fields": {
+      "username": "patient11",
+      "role": 3,
+      "identification_type": "Passport",
+      "identification_number": "111111112",
+      "email": "patient11@example.com"
+    }
+  },
+  {
+    "model": "authentication.patient",
+    "pk": 102,
+    "fields": {
+      "user": 117,
+      "profile_picture": "base64_encoded_picture",
+      "fingerprint": "fingerprint_data",
+      "signature": "base64_encoded_signature",
+      "place_of_birth": "CityZ",
+      "dependant": "1",
+      "schooling": "University",
+      "zone": "Urban",
+      "stratum": "4",
+      "marital_status": "Single",
+      "blood_type": "AB+",
+      "occupation_risk_insurance": "ARL125",
+      "pension_fund": "PensionZ",
+      "medical_insurance": "EPS458",
+      "section": "Coordinator",
+      "occupation": "Engineer"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 118,
+    "fields": {
+      "username": "patient12",
+      "role": 3,
+      "identification_type": "Passport",
+      "identification_number": "11111112",
+      "email": "patient12@example.com"
+    }
+  },
+  {
+    "model": "authentication.patient",
+    "pk": 103,
+    "fields": {
+      "user": 118,
+      "profile_picture": "base64_encoded_picture",
+      "fingerprint": "fingerprint_data",
+      "signature": "base64_encoded_signature",
+      "place_of_birth": "CityA",
+      "dependant": "0",
+      "schooling": "College",
+      "zone": "Rural",
+      "stratum": "1",
+      "marital_status": "Divorced",
+      "blood_type": "O-",
+      "occupation_risk_insurance": "ARL126",
+      "pension_fund": "PensionA",
+      "medical_insurance": "EPS459",
+      "section": "Assistant",
+      "occupation": "Assistant"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 119,
+    "fields": {
+      "username": "patient13",
+      "role": 3,
+      "identification_type": "Passport",
+      "identification_number": "11111113",
+      "email": "patient13@example.com"
+    }
+  },
+  {
+    "model": "authentication.patient",
+    "pk": 104,
+    "fields": {
+      "user": 119,
+      "profile_picture": "base64_encoded_picture",
+      "fingerprint": "fingerprint_data",
+      "signature": "base64_encoded_signature",
+      "place_of_birth": "CityB",
+      "dependant": "4",
+      "schooling": "University",
+      "zone": "Urban",
+      "stratum": "3",
+      "marital_status": "Married",
+      "blood_type": "A+",
+      "occupation_risk_insurance": "ARL127",
+      "pension_fund": "PensionB",
+      "medical_insurance": "EPS460",
+      "section": "Manager",
+      "occupation": "Manager"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 120,
+    "fields": {
+      "username": "patient14",
+      "role": 3,
+      "identification_type": "Passport",
+      "identification_number": "11111114",
+      "email": "patient14@example.com"
+    }
+  },
+  {
+    "model": "authentication.patient",
+    "pk": 105,
+    "fields": {
+      "user": 120,
+      "profile_picture": "base64_encoded_picture",
+      "fingerprint": "fingerprint_data",
+      "signature": "base64_encoded_signature",
+      "place_of_birth": "CityC",
+      "dependant": "2",
+      "schooling": "High School",
+      "zone": "Suburban",
+      "stratum": "2",
+      "marital_status": "Single",
+      "blood_type": "B+",
+      "occupation_risk_insurance": "ARL128",
+      "pension_fund": "PensionC",
+      "medical_insurance": "EPS461",
+      "section": "Supervisor",
+      "occupation": "Teacher"
+    }
+  },
+  {
+    "model": "exam.exam",
+    "pk": 1,
+    "fields": {
+      "name": "Blood Test"
+    }
+  },
+  {
+    "model": "exam.exam",
+    "pk": 2,
+    "fields": {
+      "name": "X-Ray"
+    }
+  },
+  {
+    "model": "exam.exam",
+    "pk": 3,
+    "fields": {
+      "name": "MRI"
+    }
+  },
+  {
+    "model": "exam.exam",
+    "pk": 4,
+    "fields": {
+      "name": "Ultrasound"
+    }
+  },
+  {
+    "model": "exam.exam",
+    "pk": 5,
+    "fields": {
+      "name": "ECG"
+    }
+  },
+  {
+    "model": "exam.package",
+    "pk": 1,
+    "fields": {
+      "name": "Basic Health Checkup",
+      "price": 150.0
+    }
+  },
+  {
+    "model": "exam.package",
+    "pk": 2,
+    "fields": {
+      "name": "Cardiac Screening",
+      "price": 200.0
+    }
+  },
+  {
+    "model": "exam.package",
+    "pk": 3,
+    "fields": {
+      "name": "Full Body Scan",
+      "price": 300.0
+    }
+  },
+  {
+    "model": "exam.tariff",
+    "pk": 1,
+    "fields": {
+      "name": "Standard Tariff",
+      "active": true
+    }
+  },
+  {
+    "model": "exam.tariff",
+    "pk": 2,
+    "fields": {
+      "name": "Premium Tariff",
+      "active": false
+    }
+  },
+  {
+    "model": "exam.examprice",
+    "pk": 1,
+    "fields": {
+      "exam": 1,
+      "price": 50.0
+    }
+  },
+  {
+    "model": "exam.examprice",
+    "pk": 2,
+    "fields": {
+      "exam": 2,
+      "price": 80.0
+    }
+  },
+  {
+    "model": "exam.examprice",
+    "pk": 3,
+    "fields": {
+      "exam": 3,
+      "price": 120.0
+    }
+  },
+  {
+    "model": "exam.examprice",
+    "pk": 4,
+    "fields": {
+      "exam": 4,
+      "price": 70.0
+    }
+  },
+  {
+    "model": "exam.examprice",
+    "pk": 5,
+    "fields": {
+      "exam": 5,
+      "price": 40.0
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 121,
+    "fields": {
+      "username": "company1",
+      "role": 4,
+      "identification_type": "NIT",
+      "identification_number": "1234567890",
+      "email": "company1@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 122,
+    "fields": {
+      "username": "company2",
+      "role": 4,
+      "identification_type": "NIT",
+      "identification_number": "9876543210",
+      "email": "company2@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 123,
+    "fields": {
+      "username": "company3",
+      "role": 4,
+      "identification_type": "NIT",
+      "identification_number": "5678901234",
+      "email": "company3@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 124,
+    "fields": {
+      "username": "company4",
+      "role": 4,
+      "identification_type": "NIT",
+      "identification_number": "4321098765",
+      "email": "company4@example.com"
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 125,
+    "fields": {
+      "username": "company5",
+      "role": 4,
+      "identification_type": "NIT",
+      "identification_number": "9876540123",
+      "email": "company5@example.com"
+    }
+  },
+  {
+    "model": "company.company",
+    "pk": 3,
+    "fields": {
+      "user": 123,
+      "nit": "5678901234",
+      "name": "Company Three",
+      "short_name": "C3",
+      "address": "Street C",
+      "department": "Department Z",
+      "city": "City Z",
+      "email": "company3@example.com",
+      "phone": "5678901234"
+    }
+  },
+  {
+    "model": "company.company",
+    "pk": 1,
+    "fields": {
+      "user": 119,
+      "nit": "5678901234",
+      "name": "Company One",
+      "short_name": "C1",
+      "address": "Street C",
+      "department": "Department Z",
+      "city": "City Z",
+      "email": "company1@example.com",
+      "phone": "5678901234"
+    }
+  },
+  {
+    "model": "company.company",
+    "pk": 4,
+    "fields": {
+      "user": 124,
+      "nit": "4321098765",
+      "name": "Company Four",
+      "short_name": "C4",
+      "address": "Street D",
+      "department": "Department W",
+      "city": "City W",
+      "email": "company4@example.com",
+      "phone": "4321098765"
+    }
+  },
+  {
+    "model": "company.company",
+    "pk": 5,
+    "fields": {
+      "user": 125,
+      "nit": "9876540123",
+      "name": "Company Five",
+      "short_name": "C5",
+      "address": "Street E",
+      "department": "Department V",
+      "city": "City V",
+      "email": "company5@example.com",
+      "phone": "9876540123"
+    }
+  },
+  {
+    "model": "company.missioncompany",
+    "pk": 3,
+    "fields": {
+      "name": "Mission Three",
+      "company": 3,
+      "active": true
+    }
+  },
+  {
+    "model": "company.missioncompany",
+    "pk": 4,
+    "fields": {
+      "name": "Mission Four",
+      "company": 4,
+      "active": false
+    }
+  },
+  {
+    "model": "company.missioncompany",
+    "pk": 5,
+    "fields": {
+      "name": "Mission Five",
+      "company": 5,
+      "active": true
+    }
+  },
+  {
+    "model": "appointment.accompanist",
+    "pk": 1,
+    "fields": {
+      "indentification_type": "CC",
+      "identification": "123456789",
+      "name": "Accompanist One",
+      "phone": "1234567890",
+      "email": "accompanist1@example.com",
+      "relationship": "Parent"
+    }
+  },
+  {
+    "model": "appointment.accompanist",
+    "pk": 2,
+    "fields": {
+      "indentification_type": "CC",
+      "identification": "987654321",
+      "name": "Accompanist Two",
+      "phone": "9876543210",
+      "email": "accompanist2@example.com",
+      "relationship": "Spouse"
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 1,
+    "fields": {
+      "turn": 1,
+      "patient": 101,
+      "company": 1,
+      "doctor": 101,
+      "city": "City X",
+      "evaluation_type": "Type A",
+      "payment_type": "Cash",
+      "comment": "First appointment",
+      "package": 1,
+      "accompanist": 1,
+      "total_amount": 50.0,
+      "status": 1,
+      "registered_by": 101
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 2,
+    "fields": {
+      "turn": 2,
+      "patient": 102,
+      "company": 1,
+      "doctor": 102,
+      "city": "City Y",
+      "evaluation_type": "Type B",
+      "payment_type": "Credit Card",
+      "comment": "Second appointment",
+      "package": 2,
+      "accompanist": 2,
+      "total_amount": 80.0,
+      "status": 2,
+      "registered_by": 102
+    }
+  },
+  {
+    "model": "appointment.emphasis",
+    "pk": 1,
+    "fields": {
+      "name": "Emphasis One",
+      "appointment": 1
+    }
+  },
+  {
+    "model": "appointment.emphasis",
+    "pk": 2,
+    "fields": {
+      "name": "Emphasis Two",
+      "appointment": 2
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 3,
+    "fields": {
+      "turn": 3,
+      "patient": 103,
+      "company": 1,
+      "doctor": 103,
+      "city": "City Z",
+      "evaluation_type": "Type C",
+      "payment_type": "Debit Card",
+      "comment": "Third appointment",
+      "package": 1,
+      "accompanist": 1,
+      "total_amount": 60.0,
+      "status": 3,
+      "registered_by": 103
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 4,
+    "fields": {
+      "turn": 4,
+      "patient": 104,
+      "company": 1,
+      "doctor": 104,
+      "city": "City X",
+      "evaluation_type": "Type A",
+      "payment_type": "Cash",
+      "comment": "Fourth appointment",
+      "package": 2,
+      "accompanist": 2,
+      "total_amount": 70.0,
+      "status": 1,
+      "registered_by": 104
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 5,
+    "fields": {
+      "turn": 5,
+      "patient": 105,
+      "company": 1,
+      "doctor": 105,
+      "city": "City Y",
+      "evaluation_type": "Type B",
+      "payment_type": "Credit Card",
+      "comment": "Fifth appointment",
+      "package": 1,
+      "accompanist": 1,
+      "total_amount": 55.0,
+      "status": 2,
+      "registered_by": 105
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 6,
+    "fields": {
+      "turn": 6,
+      "patient": 101,
+      "company": 1,
+      "doctor": 105,
+      "city": "City Z",
+      "evaluation_type": "Type C",
+      "payment_type": "Debit Card",
+      "comment": "Sixth appointment",
+      "package": 2,
+      "accompanist": 2,
+      "total_amount": 90.0,
+      "status": 3,
+      "registered_by": 106
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 7,
+    "fields": {
+      "turn": 7,
+      "patient": 101,
+      "company": 1,
+      "doctor": 104,
+      "city": "City X",
+      "evaluation_type": "Type A",
+      "payment_type": "Cash",
+      "comment": "Seventh appointment",
+      "package": 1,
+      "accompanist": 1,
+      "total_amount": 75.0,
+      "status": 1,
+      "registered_by": 107
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 8,
+    "fields": {
+      "turn": 8,
+      "patient": 100,
+      "company": 3,
+      "doctor": 103,
+      "city": "City Y",
+      "evaluation_type": "Type B",
+      "payment_type": "Credit Card",
+      "comment": "Eighth appointment",
+      "package": 2,
+      "accompanist": 2,
+      "total_amount": 70.0,
+      "status": 2,
+      "registered_by": 108
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 9,
+    "fields": {
+      "turn": 9,
+      "patient": 100,
+      "company": 4,
+      "doctor": 102,
+      "city": "City Z",
+      "evaluation_type": "Type C",
+      "payment_type": "Debit Card",
+      "comment": "Ninth appointment",
+      "package": 1,
+      "accompanist": 1,
+      "total_amount": 55.0,
+      "status": 3,
+      "registered_by": 109
+    }
+  },
+  {
+    "model": "appointment.appointment",
+    "pk": 10,
+    "fields": {
+      "turn": 10,
+      "patient": 101,
+      "company": 3,
+      "doctor": 101,
+      "city": "City X",
+      "evaluation_type": "Type A",
+      "payment_type": "Cash",
+      "comment": "Tenth appointment",
+      "package": 2,
+      "accompanist": 2,
+      "total_amount": 80.0,
+      "status": 1,
+      "registered_by": 110
+    }
+  }
+]

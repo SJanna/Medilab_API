@@ -41,8 +41,8 @@ class Appointment(models.Model):
     # ------------------------------------------------------------------------------------------------------------
     # Otros datos ------------------------------------------------------------------------------------------------
     registered_by = models.ForeignKey(User, models.DO_NOTHING)
-    created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    # created_at = models.DateTimeField(auto_now=True)
+    # updated_at = models.DateTimeField(auto_now_add=True)
     # ------------------------------------------------------------------------------------------------------------
     
     def __str__(self):
@@ -64,6 +64,6 @@ class Appointment(models.Model):
 
 class Emphasis(models.Model):
     name = models.CharField(max_length=255)
-    Appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING)
-    created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING)
+    # created_at = models.DateTimeField(auto_now=True)
+    # updated_at = models.DateTimeField(auto_now_add=True)
