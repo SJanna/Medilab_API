@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-
+    'django_seed',
     'rest_framework',
     #Token Login
     'rest_framework.authtoken',
