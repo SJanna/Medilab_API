@@ -4,6 +4,7 @@ from django.db import models
 class Tariff(models.Model):
     name = models.CharField(max_length=255)
     exams_prices = models.ManyToManyField('ExamPrice', related_name='exams_prices', blank=True) #La lista de examenes(con precio) que tiene el tarifario
+    packages = models.ManyToManyField('Package', related_name='packages', blank=True) #La lista de paquetes que tiene el tarifario
     active = models.BooleanField()
     # created_at = models.DateTimeField(auto_now=True)
     # updated_at = models.DateTimeField(auto_now_add=True)

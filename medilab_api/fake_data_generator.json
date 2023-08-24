@@ -316,6 +316,8 @@
     "model": "authentication.user",
     "pk": 116,
     "fields": {
+      "first_name": "Juan Antonio",
+      "last_name": "Perez Perez",
       "username": "patient10",
       "role": 3,
       "identification_type": "Passport",
