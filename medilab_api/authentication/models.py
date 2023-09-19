@@ -13,6 +13,15 @@ class Role(models.Model):
 
 
 class User(AbstractUser):
+    # username = models.CharField(max_length=255, unique=True)
+    # password = models.CharField(max_length=255)
+    # first_name = models.CharField(max_length=255)
+    # last_name = models.CharField(max_length=255)
+    # is_superuser = models.BooleanField(default=False)
+    # is_staff = models.BooleanField(default=False)
+    # is_active = models.BooleanField(default=True)
+    # date_joined = models.DateTimeField(auto_now_add=True)
+    # last_login = models.DateTimeField(auto_now=True)
     role = models.ForeignKey(
         Role, on_delete=models.CASCADE, blank=True, null=True)
     identification_type = models.CharField(max_length=50)
@@ -31,6 +40,11 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    def get_full_name(self):
+        return self.first_name + ' ' + self.last_name
+    
+    def get_identification(self):
+        return self.identification_type + ' ' + self.identification_number
 
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

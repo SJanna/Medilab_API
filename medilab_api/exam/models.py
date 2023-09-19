@@ -16,6 +16,7 @@ class Tariff(models.Model):
 # Lista de todos los exámenes posibles.
 class Exam(models.Model):
     name = models.CharField(max_length=255)
+    type = models.CharField(max_length=255)
     # created_at = models.DateTimeField(auto_now=True)
     # updated_at = models.DateTimeField(auto_now_add=True)
     # reference_value; En vez de tener una clase defaultExams para guardar 

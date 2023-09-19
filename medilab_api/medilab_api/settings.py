@@ -36,19 +36,13 @@ INSTALLED_APPS = [
     #Token Login
     'rest_framework.authtoken',
     'dj_rest_auth',
-
-    #Api Register --> Mis usuarios requieren muchas más información para registrarse.
-    # 'django.contrib.sites',
-    # 'allauth', 
-    # 'allauth.account', 
-
+    'django_filters',
     #Mis apps
     'authentication',
     'exam',
     'company',
     'appointment',
     'medical_record',
-
     #Apps de Django
     'auditlog',
     'django.contrib.admin',
@@ -62,12 +56,14 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication', 
     ],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 5,
 }
 
 MIDDLEWARE = [
@@ -94,6 +90,7 @@ MIDDLEWARE = [
 # Only this domain is allowed to access the API.
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173", # or whatever your domain is
+    "http://localhost:3000"
 ]
 
 # CORS_ORIGIN_ALLOW_ALL = True
@@ -101,6 +98,7 @@ CORS_ALLOWED_ORIGINS = [
 # Only this domain is allowed to send cookies. 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:5173",
+    "http://localhost:3000"
 ]
 
 # Allow cookies to be included in cross-site HTTP requests.
@@ -183,6 +181,8 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
+
+DATE_FORMAT =  "d-m-Y"
 
 USE_I18N = True
 

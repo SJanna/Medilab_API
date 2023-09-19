@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Appointment, Patient, User
+from audit_logs.serializers import LogEntrySerializer
+
 
 class UserSerializer(serializers.ModelSerializer):
     role = serializers.CharField(default='Patient') 
@@ -38,3 +40,25 @@ class AppointmentSerializer(serializers.ModelSerializer):
             **validated_data
         )
         return appointment
+
+# Serialiador para la tabla de citas, con el fin de mostrar algunos datos de la cita.
+# En la tabla se debe mostrar: Turno, Fecha, Id Paciente, Nombre Paciente, Tipo Examen, Empresa, (Estados) (Botones: Editar, Historia, Ceriticados, otros)
+# Solo se muestran los datos, pero no se pueden editar. ni eliminar ni crear.
+
+class AppointmentListSerializer(serializers.ModelSerializer):
+    patient_name = serializers.CharField(source='patient.user.get_full_name', read_only=True)  
+    patient_identification = serializers.CharField(source='patient.user.get_identification', read_only=True)
+    company_name = serializers.CharField(source='company.name', read_only=True)
+    created_at = serializers.DateTimeField(format="%d/%m/%Y %I:%M %p", read_only=True)
+    updated_at = serializers.DateTimeField(format="%d/%m/%Y %I:%M %p", read_only=True)
+    registered_by = serializers.CharField(source='registered_by.get_full_name', read_only=True)
+    attended_by = serializers.CharField(source='doctor.user.get_full_name', read_only=True)
+    exams = serializers.JSONField(source='get_exams', read_only=True)
+    package = serializers.CharField(source='package.name', read_only=True)
+    is_edited = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = Appointment
+        fields = ['id', 'turn', 'status', 'created_at', 'updated_at', 'patient_identification', 'patient_name', 'evaluation_type','company_name', 'registered_by', 'attended_by', 'exams', 'package', 'is_edited']
+        read_only_fields = ['id', 'turn', 'status', 'created_at', 'updated_at', 'patient_identification', 'patient_name', 'evaluation_type','company_name', 'registered_by', 'attended_by', 'exams', 'package', 'is_edited']
+

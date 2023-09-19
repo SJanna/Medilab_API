@@ -2,6 +2,7 @@ from django.db import models
 from authentication.models import User, Patient, Doctor
 from company.models import Company
 from exam.models import Package
+from exam.models import ExamPrice
 from django.utils import timezone
 
 class Accompanist(models.Model):
@@ -32,28 +33,31 @@ class Appointment(models.Model):
     evaluation_type = models.CharField(max_length=255)
     payment_type = models.CharField(max_length=50, blank=True, null=True)
     comment = models.TextField(blank=True, null=True)  # Observations
+    exams = models.ManyToManyField(ExamPrice, related_name='exam_price', blank=True) # Lista de exámenes
     package = models.ForeignKey(Package, models.DO_NOTHING, blank=True, null=True)
     # Acompañante -----------------------------------------------------------------------------------------------
     accompanist = models.ForeignKey(Accompanist, on_delete=models.DO_NOTHING, blank=True, null=True)
     # ------------------------------------------------------------------------------------------------------------
     total_amount = models.FloatField()
-    status = models.IntegerField(blank=True, null=True)
+    status = models.CharField(max_length=255, default='PENDIENTE') # Pendiente, Atendido, Cancelado, No asistió
     # ------------------------------------------------------------------------------------------------------------
     # Otros datos ------------------------------------------------------------------------------------------------
     registered_by = models.ForeignKey(User, models.DO_NOTHING)
-    # created_at = models.DateTimeField(auto_now=True)
-    # updated_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     # ------------------------------------------------------------------------------------------------------------
     
     def __str__(self):
         return str(self.turn) + str(self.doctor)
-        
     
-    def save(self, *args, **kwargs):
-        # if not self.pk:
-        #     user = kwargs.pop('user', None)
-        #     if user:
-        #         self.registered_by = user
+    # {exam_name: exam.exam.name, price: exam.price} 
+    def get_exams(self): 
+        return [{'exam_name': exam.exam.name, 'price': exam.price, 'type': exam.exam.type} for exam in self.exams.all()]  
+
+    def is_edited(self):
+        return self.created_at != self.updated_at    
+    
+    def create(self, *args, **kwargs):
         try:
             last_appointment = Appointment.objects.filter(created_at__date=timezone.now()).latest('created_at')
             self.turn = last_appointment.turn + 1
@@ -65,5 +69,5 @@ class Appointment(models.Model):
 class Emphasis(models.Model):
     name = models.CharField(max_length=255)
     appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING)
-    # created_at = models.DateTimeField(auto_now=True)
-    # updated_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
