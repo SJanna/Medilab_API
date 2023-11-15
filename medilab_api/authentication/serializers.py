@@ -43,11 +43,12 @@ class PatientSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 
-class DoctorNameSerializer(serializers.ModelSerializer):
+class DoctorListSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source='user.get_full_name', read_only=True)
 
     class Meta:
-        model = User
-        fields = ['first_name','last_name']
+        model = Doctor
+        fields = ['id', 'name']
         
         
 

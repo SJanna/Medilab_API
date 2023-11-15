@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 from exam.serializers import TariffSerializer
-from .models import Company, MissionCompany
+from .models import Company, MissionCompany, Tariff
 
 
 class MissionCompanySerializer(serializers.ModelSerializer):
@@ -20,3 +20,19 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CompanyListSerializer(serializers.ModelSerializer):
+    mission_companies = serializers.SerializerMethodField()
+    tariffs = serializers.SerializerMethodField()
+# 
+    class Meta:
+        model = Company
+        fields = ['id', 'name', 'mission_companies', 'tariffs']
+
+    def get_tariffs(self, obj):
+        active_tariffs = obj.tariff.filter(active=True)
+        return TariffSerializer(active_tariffs, many=True).data
+    
+    def get_mission_companies(self, obj):
+        active_mission_companies = obj.company.filter(active=True)
+        return MissionCompanySerializer(active_mission_companies, many=True).data
+    

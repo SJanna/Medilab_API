@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics
 from .models import User, Role, Patient, Doctor
-from .serializers import DoctorNameSerializer, UserSerializer, RoleSerializer, PatientSerializer, DoctorSerializer, RevalidateUserSerializer
+from .serializers import DoctorListSerializer, UserSerializer, RoleSerializer, PatientSerializer, DoctorSerializer, RevalidateUserSerializer
 # Login imports. ------------------------------------------------ #
 from dj_rest_auth.views import LoginView as DefaultLoginView
 from django.http import JsonResponse
@@ -73,10 +73,9 @@ class PatientViewSet(viewsets.ModelViewSet):
     queryset = Patient.objects.all()
     
 
-class DoctorNameList(generics.ListAPIView):
-    # permission_classes = []
-    serializer_class = DoctorNameSerializer
-    queryset = User.objects.filter(role__name='Doctor')
+class DoctorList(generics.ListAPIView):
+    serializer_class = DoctorListSerializer
+    queryset = Doctor.objects.all()
     
 
     

@@ -1,6 +1,6 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, RoleViewSet, DoctorViewSet, PatientViewSet, LoginView, get_csrf_token, RevalidateUserView, DoctorNameList
+from .views import UserViewSet, RoleViewSet, DoctorViewSet, PatientViewSet, LoginView, get_csrf_token, RevalidateUserView, DoctorList
 
 
 router = DefaultRouter()
@@ -17,7 +17,7 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')), # include other dj_rest_auth urls
     path('get-csrf-token/', get_csrf_token, name='get-csrf-token'), # get csrf token
     path('revalidate-user/', RevalidateUserView.as_view(), name='revalidate-user'), # revalidate user
-    path('doctor-name-list/', DoctorNameList.as_view(), name='doctor-name-list'),
+    path('doctor_list/', DoctorList.as_view(), name='doctor_list'),
 ]
 
 

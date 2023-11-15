@@ -2,7 +2,7 @@ from django.db import models
 from authentication.models import User, Patient, Doctor
 from company.models import Company
 from exam.models import Package
-from exam.models import ExamPrice
+from exam.models import AppointmentExam
 from django.utils import timezone
 
 class Accompanist(models.Model):
@@ -33,7 +33,7 @@ class Appointment(models.Model):
     evaluation_type = models.CharField(max_length=255)
     payment_type = models.CharField(max_length=50, blank=True, null=True)
     comment = models.TextField(blank=True, null=True)  # Observations
-    exams = models.ManyToManyField(ExamPrice, related_name='exam_price', blank=True) # Lista de exámenes
+    exams = models.ManyToManyField(AppointmentExam, related_name='appointment_exams', blank=True) # Lista de exámenes
     package = models.ForeignKey(Package, models.DO_NOTHING, blank=True, null=True)
     # Acompañante -----------------------------------------------------------------------------------------------
     accompanist = models.ForeignKey(Accompanist, on_delete=models.DO_NOTHING, blank=True, null=True)
@@ -50,9 +50,8 @@ class Appointment(models.Model):
     def __str__(self):
         return str(self.turn) + str(self.doctor)
     
-    # {exam_name: exam.exam.name, price: exam.price} 
     def get_exams(self): 
-        return [{'exam_name': exam.exam.name, 'price': exam.price, 'type': exam.exam.type} for exam in self.exams.all()]  
+        return [{'exam_name': exam.exam_price.exam.name, 'price': exam.exam_price.price, 'type': exam.exam_price.exam.type.name, 'icon': exam.exam_price.exam.type.icon, 'category':exam.exam_price.exam.category, 'state':exam.status, 'request_date':exam.request_date, 'completion_date':exam.completion_date} for exam in self.exams.all()]  
 
     def is_edited(self):
         return self.created_at != self.updated_at    
@@ -64,7 +63,9 @@ class Appointment(models.Model):
         except Appointment.DoesNotExist:
             self.turn = 1
         super(Appointment, self).save(*args, **kwargs)
-        
+
+    def get_doctors(self):
+        return [{'id': doctor.id, 'name': doctor.user.get_full_name()} for doctor in Doctor.objects.all()]
 
 class Emphasis(models.Model):
     name = models.CharField(max_length=255)

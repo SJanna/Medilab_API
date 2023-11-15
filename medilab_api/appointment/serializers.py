@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from .models import Appointment, Patient, User
+
+from company.serializers import CompanySerializer, MissionCompanySerializer
+from exam.serializers import ExamSerializer, TariffSerializer
+from authentication.serializers import DoctorSerializer
+from exam.models import Exam
+from .models import Appointment
+from authentication.models import Doctor, User, Patient
+from company.models import Company
 from audit_logs.serializers import LogEntrySerializer
 
 
@@ -49,8 +56,8 @@ class AppointmentListSerializer(serializers.ModelSerializer):
     patient_name = serializers.CharField(source='patient.user.get_full_name', read_only=True)  
     patient_identification = serializers.CharField(source='patient.user.get_identification', read_only=True)
     company_name = serializers.CharField(source='company.name', read_only=True)
-    created_at = serializers.DateTimeField(format="%d/%m/%Y %I:%M %p", read_only=True)
-    updated_at = serializers.DateTimeField(format="%d/%m/%Y %I:%M %p", read_only=True)
+    # created_at = serializers.DateTimeField(format="%d/%m/%Y %I:%M %p", read_only=True)
+    # updated_at = serializers.DateTimeField(format="%d/%m/%Y %I:%M %p", read_only=True)
     registered_by = serializers.CharField(source='registered_by.get_full_name', read_only=True)
     attended_by = serializers.CharField(source='doctor.user.get_full_name', read_only=True)
     exams = serializers.JSONField(source='get_exams', read_only=True)
@@ -61,4 +68,13 @@ class AppointmentListSerializer(serializers.ModelSerializer):
         model = Appointment
         fields = ['id', 'turn', 'status', 'created_at', 'updated_at', 'patient_identification', 'patient_name', 'evaluation_type','company_name', 'registered_by', 'attended_by', 'exams', 'package', 'is_edited']
         read_only_fields = ['id', 'turn', 'status', 'created_at', 'updated_at', 'patient_identification', 'patient_name', 'evaluation_type','company_name', 'registered_by', 'attended_by', 'exams', 'package', 'is_edited']
+
+
+class AppointmetFormDataSerializer(serializers.Serializer):
+    doctors = DoctorSerializer(many=True)
+    exams = ExamSerializer(many=True)
+    companies = CompanySerializer(many=True)
+    mission_companies = MissionCompanySerializer(many=True)
+    tariff = TariffSerializer(many=True)
+
 

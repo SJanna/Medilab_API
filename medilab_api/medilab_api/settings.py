@@ -98,7 +98,8 @@ CORS_ALLOWED_ORIGINS = [
 # Only this domain is allowed to send cookies. 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:5173",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "hhtp://localhost:5173"
 ]
 
 # Allow cookies to be included in cross-site HTTP requests.
